@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:html/parser.dart';
 import 'package:html/dom.dart';
+import 'package:intl/intl.dart';
 import 'package:yaml/yaml.dart';
 import 'package:yaml_writer/yaml_writer.dart';
 
@@ -40,6 +41,7 @@ class NWIndexer {
 
   String listFmt([bool forceAnalyze = false]) => this.list(forceAnalyze).$2.map<String>(((String name, String title, Uri path) e) => "* html: ${e.$1}\t\t title: ${e.$2}").join("\n");
   String listAsHtml([bool forceAnalyze = false]) => "<div>\n" + this.list(forceAnalyze).$2.map<String>(((String name, String title, Uri path) e) => "  <a href=\"./${e.$1}\">${e.$2}</a>").join("\n") + "\n</div>";
+  String listAsMd([bool forceAnalyze = false]) => this.list(forceAnalyze).$2.map<String>(((String name, String title, Uri path) e) => "- [${e.$2} - ${e.$1}](./${e.$1})").join("\n");
   YamlDocument make([bool forceAnalyze = false]) {
     YamlWriter ed = YamlWriter();
     this._yst = ed.write(this.list(forceAnalyze).$2.map<Map<String, String>>(((String name, String title, Uri path) e) => Map<String, String>.fromEntries(<MapEntry<String, String>>[MapEntry<String, String>("html", e.$1), MapEntry<String, String>("title", e.$2)])).toList());
@@ -53,6 +55,26 @@ class NWIndexer {
     }
     this.make(forceAnalyze);
     f.writeAsStringSync(this._yst);
+  }
+}
+
+class NWIndexDoc {
+  final Directory base;
+  final String indexFilename;
+  String _yst = "";
+  NWIndexDoc(this.base, this.indexFilename);
+  NWIndexDoc.fromindexer(NWIndexer ix, [String? indexFilename])
+      : this.base = ix.base,
+        this.indexFilename = indexFilename ?? ix.indexFilename {
+    this._yst = ix.listAsMd();
+  }
+
+  void write() {
+    File f = File.fromUri(Uri.file(this.base.path).cd([this.indexFilename]));
+    if (!f.existsSync()) {
+      f.createSync();
+    }
+    f.writeAsStringSync("# ンソピハワールドWiki ページ一覧\n\n機械式インデックス\n\n更新日: ${DateFormat("yyyy.MM.dd HH:mm").format(DateTime.now())}\n\n${this._yst}");
   }
 }
 

@@ -8,4 +8,6 @@ void main(List<String> arguments) {
   print(nwi.listFmt(true));
   print(nwi.listAsHtml(true));
   nwi.write();
+  final NWIndexDoc nwid = NWIndexDoc.fromindexer(nwi, "list.md");
+  nwid.write();
 }
