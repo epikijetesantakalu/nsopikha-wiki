@@ -8,7 +8,7 @@ window.onload = () => {
 function insertTemplate (file: string, className: string) {
     const req = new XMLHttpRequest()
 
-    req.open("GET", `/layouts/${file}.html`, true)
+    req.open("GET", `../layouts/${file}.html`, true)
 
     req.onreadystatechange = () => {
         if (req.readyState === 4 && req.status === 200) {
