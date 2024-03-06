@@ -35,13 +35,13 @@ class NWIndexer {
   }
 
   void analyze() {
-    List<FileSystemEntity> dl = this.base.listSync(followLinks: true).where((FileSystemEntity e) => FileSystemEntity.isFileSync(e.path)).where((FileSystemEntity e) => (e.path.endsWith(".html") || e.path.endsWith(".htm")) && !(Uri.file(e.path).pathSegments.last == "index.html" || Uri.file(e.path).pathSegments.last == "index.htm")).toList();
+    List<FileSystemEntity> dl = Directory('../../pages').listSync(followLinks: true).where((FileSystemEntity e) => FileSystemEntity.isFileSync(e.path)).where((FileSystemEntity e) => (e.path.endsWith(".html") || e.path.endsWith(".htm")) && !(Uri.file(e.path).pathSegments.last == "index.html" || Uri.file(e.path).pathSegments.last == "index.htm")).toList();
     this._index = (dl.length, dl.map<(String name, String title, Uri path)>((FileSystemEntity e) => (Uri.file(e.path).pathSegments.last, titleOf(Uri.file(e.path)), Uri.file(e.path))).toList());
   }
 
   String listFmt([bool forceAnalyze = false]) => this.list(forceAnalyze).$2.map<String>(((String name, String title, Uri path) e) => "* html: ${e.$1}\t\t title: ${e.$2}").join("\n");
-  String listAsHtml([bool forceAnalyze = false]) => "<div>\n" + this.list(forceAnalyze).$2.map<String>(((String name, String title, Uri path) e) => "  <a href=\"./${e.$1}\">${e.$2}</a>").join("\n") + "\n</div>";
-  String listAsMd([bool forceAnalyze = false]) => this.list(forceAnalyze).$2.map<String>(((String name, String title, Uri path) e) => "- [${e.$2} - ${e.$1}](./${e.$1})").join("\n");
+  String listAsHtml([bool forceAnalyze = false]) => "<div>\n" + this.list(forceAnalyze).$2.map<String>(((String name, String title, Uri path) e) => "  <a href=\"./pages/${e.$1}\">${e.$2}</a>").join("\n") + "\n</div>";
+  String listAsMd([bool forceAnalyze = false]) => this.list(forceAnalyze).$2.map<String>(((String name, String title, Uri path) e) => "- [${e.$2} - ${e.$1}](./pages/${e.$1})").join("\n");
   YamlDocument make([bool forceAnalyze = false]) {
     YamlWriter ed = YamlWriter();
     this._yst = ed.write(this.list(forceAnalyze).$2.map<Map<String, String>>(((String name, String title, Uri path) e) => Map<String, String>.fromEntries(<MapEntry<String, String>>[MapEntry<String, String>("html", e.$1), MapEntry<String, String>("title", e.$2)])).toList());

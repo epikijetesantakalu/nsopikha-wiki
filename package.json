@@ -1,0 +1,13 @@
+{
+  "dependencies": {
+    "js-yaml": "^4.1.0"
+  },
+  "devDependencies": {
+    "@types/js-yaml": "^4.0.9",
+    "@types/node": "^20.11.24",
+    "fs": "^0.0.1-security"
+  },
+  "scripts": {
+    "build": "cd tools/get-index && dart run && cd ../.. && node tools/json-convert/main.js"
+  }
+}
