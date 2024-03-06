@@ -1,6 +1,6 @@
 *.dart linguist-detectable
 wiki/** linguist-detectable
 index.html linguist-detectable
-*.tsconfig linguist-vendored
+*.json linguist-vendored
 tools/nwtool/doc/api/** linguist-vendored
 *.js linguist-generated
