@@ -1,5 +1,8 @@
-body {
+html {
     font-size: 16px;
+}
+
+body {
 	display: none;
 }
 
@@ -12,7 +15,7 @@ h1 {
 
 h2 {
     border-bottom: 1px solid #a2a9b1;
-    font-size: 1.5rem;
+    font-size: 1.5em;
     margin: 0.25em 0;
     padding: 0.5em 0 0.17em 0;
     font-weight: normal;
@@ -28,24 +31,42 @@ body {
     margin-bottom: 1.2rem;
 }
 
+.footer {
+    margin-top: 3rem;
+    border-top: 1px solid #a2a9b1;
+    font-size: 0.85rem;
+}
+
 .logo {
     height: 50px;
 }
 
 .searchBox {
+    position: relative;
     display: flex;
     height: 2rem;
     box-sizing: border-box;
     margin-left: auto;
-    width: 20rem;
+    width: 30rem;
 }
 
 .searchBox #search {
     display: block;
-    padding-left: 0.7rem;
+    padding-left: 2rem;
     font-size: 0.9rem;
     flex-grow: 1;
     border: #a2a9b1 1px solid;
+}
+
+.searchBox::before {
+    content: "";           /* 疑似要素に必須 */
+    width: 20px;           /* アイコンの横幅 */
+    height: 20px;          /* アイコンの高さ */
+    background: url(../images/search.png) no-repeat center center / auto 100%; /* 背景にアイコン画像を配置 */
+    display: inline-block; /* 高さを持たせるためにインラインブロック要素にする */
+    position: absolute;    /* 相対位置に指定 */
+    top: 6px;              /* アイコンの位置。微調整してね */
+    left: 6px;             /* アイコンの位置。微調整してね */
 }
 
 .searchBox button {

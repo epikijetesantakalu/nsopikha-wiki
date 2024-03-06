@@ -1,10 +1,15 @@
 "use strict";
+insertTemplate("header", "header");
+insertTemplate("stub", "stub");
+insertTemplate("footer", "footer");
+setTitle();
+document.body.style.display = 'block'; //読み込みが終わったら表示
 window.onload = () => {
-    insertTemplate("header", "header");
-    insertTemplate("stub", "stub");
-    insertTemplate("footer", "footer");
-    setTitle();
-    document.body.style.display = 'block'; //読み込みが終わったら表示
+    const searchButton = document.getElementById("searchButton");
+    const searchText = document.getElementById("search");
+    searchButton.addEventListener("click", (e) => {
+        window.location.assign(`/nsopikha-wiki/specials/search.html?text=${searchText.value}`);
+    });
 };
 function insertTemplate(file, className) {
     const req = new XMLHttpRequest();
