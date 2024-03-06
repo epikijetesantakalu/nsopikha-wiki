@@ -2,7 +2,7 @@
 
 機械式インデックス
 
-更新日: 2024.03.06 19:20
+更新日: 2024.03.06 19:25
 
 - [エピキイェテサンタカルケタ - epikijetesantakaluKeta.html](./pages/epikijetesantakaluKeta.html)
 - [かえる2193 - kaeru2193.html](./pages/kaeru2193.html)
@@ -19,6 +19,5 @@
 - [ぷか - puka.html](./pages/puka.html)
 - [ロトカス語 - rotokas.html](./pages/rotokas.html)
 - [せめりせめあぬせめ - semelisemeanuseme.html](./pages/semelisemeanuseme.html)
-- [せめりせめあぬせめ - test.html](./pages/test.html)
 - [トキポナ - tokipona.html](./pages/tokipona.html)
 - [ゆずるそふぃあ - yuzurusofia.html](./pages/yuzurusofia.html)
