@@ -2,5 +2,5 @@
 wiki/** linguist-detectable
 index.html linguist-detectable
 *.tsconfig linguist-vendored
-tools/nwtools/doc/api/** linguist-vendored
+tools/nwtool/doc/api/** linguist-vendored
 *.js linguist-generated
