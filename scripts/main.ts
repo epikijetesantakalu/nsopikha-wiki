@@ -1,6 +1,7 @@
 window.onload = () => {
     insertTemplate("header", "header")
     insertTemplate("stub", "stub")
+    insertTemplate("footer", "footer")
     setTitle()
     document.body.style.display = 'block' //読み込みが終わったら表示
 }
