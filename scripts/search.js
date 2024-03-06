@@ -5,7 +5,7 @@ const urlParams = url.searchParams.get("text");
 const searchText = urlParams ? urlParams : "";
 const display = document.getElementById("searchDisplay");
 const xhr = new XMLHttpRequest();
-xhr.open('GET', "/nsopikha-wiki/_index.json");
+xhr.open('GET', "/nsopikha-wiki/index.json");
 xhr.onload = () => {
     const pageData = JSON.parse(xhr.response);
     const filtered = pageData.filter((p) => p.title.includes(searchText));
