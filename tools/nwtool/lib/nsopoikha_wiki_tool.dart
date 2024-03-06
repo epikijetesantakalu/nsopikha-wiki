@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:html/parser.dart';
@@ -46,8 +47,17 @@ class NWIndexer {
   String listFmt([bool forceAnalyze = false]) => this.list(forceAnalyze).$2.map<String>(((String name, String title, Uri path) e) => "* html: ${e.$1}\t\t title: ${e.$2}").join("\n");
   String listAsHtml([bool forceAnalyze = false]) => "<div>\n" + this.list(forceAnalyze).$2.map<String>(((String name, String title, Uri path) e) => "  <a href=\"./wiki/${e.$1}\">${e.$2}</a>").join("\n") + "\n</div>";
   String listAsMd([bool forceAnalyze = false]) => this.list(forceAnalyze).$2.map<String>(((String name, String title, Uri path) e) => "- [${e.$2} - ${e.$1}](./wiki/${e.$1})").join("\n");
-  String outAsYaml([bool forceAnalyze = false]) => "";
-  String outAsJson([bool forceAnalyze = false]) => "";
+
+  /// Output
+  String outAsYaml([bool forceAnalyze = false]) {
+    this.make(forceAnalyze);
+    return this._yst;
+  }
+
+  /// Output Data as JSON format
+  String outAsJson([bool forceAnalyze = false]) => jsonEncode(loadYaml(this.outAsYaml(forceAnalyze)));
+
+  /// Make Data within YAML format
   YamlDocument make([bool forceAnalyze = false]) {
     YamlWriter ed = YamlWriter();
     this._yst = ed.write(this.list(forceAnalyze).$2.map<Map<String, String>>(((String name, String title, Uri path) e) => Map<String, String>.fromEntries(<MapEntry<String, String>>[MapEntry<String, String>("html", e.$1), MapEntry<String, String>("title", e.$2)])).toList());
@@ -59,8 +69,7 @@ class NWIndexer {
     if (!f.existsSync()) {
       f.createSync();
     }
-    this.make(forceAnalyze);
-    f.writeAsStringSync(this._yst);
+    f.writeAsStringSync(this.outAsYaml(forceAnalyze));
   }
 }
 
