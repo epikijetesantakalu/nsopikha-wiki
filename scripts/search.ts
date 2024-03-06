@@ -21,7 +21,7 @@ xhr.send();
 function makeList(data: any[]) {
     const pages = 
         data.reduce((prev, p) => {
-            return prev + `\n<li><a href="/nsopikha-wiki/pages/${p.html}">${p.title}</a></li>`
+            return prev + `\n<li><a href="/nsopikha-wiki/wiki/${p.html}">${p.title}</a></li>`
         }, "")
     return `<ol>${pages}\n</ol>`
 }
