@@ -4,8 +4,8 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
-  <meta name="description" content="API docs for the enclose method from the Intercalater extension, for the Dart programming language.">
-  <title>enclose method - Intercalater extension - nsopoikha_wiki_tool library - Dart API</title>
+  <meta name="description" content="API docs for the parent property from the UriCD extension, for the Dart programming language.">
+  <title>parent property - UriCD extension - nsopoikha_wiki_tool library - Dart API</title>
 
 
   
@@ -30,10 +30,10 @@
   <ol class="breadcrumbs gt-separated dark hidden-xs">
     <li><a href="../../index.html">nsopoikha_wiki_tool</a></li>
     <li><a href="../../nsopoikha_wiki_tool/nsopoikha_wiki_tool-library.html">nsopoikha_wiki_tool.dart</a></li>
-    <li><a href="../../nsopoikha_wiki_tool/Intercalater.html">Intercalater<span class="signature">&lt;<wbr><span class="type-parameter">T</span>&gt;</span></a></li>
-    <li class="self-crumb">enclose method</li>
+    <li><a href="../../nsopoikha_wiki_tool/UriCD.html">UriCD</a></li>
+    <li class="self-crumb">parent property</li>
   </ol>
-  <div class="self-name">enclose</div>
+  <div class="self-name">parent</div>
   <form class="search navbar-right" role="search">
     <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
   </form>
@@ -54,34 +54,35 @@
   <div
       id="dartdoc-main-content"
       class="main-content"
-      data-above-sidebar="nsopoikha_wiki_tool&#47;Intercalater-extension-sidebar.html"
+      data-above-sidebar="nsopoikha_wiki_tool&#47;UriCD-extension-sidebar.html"
       data-below-sidebar="">
       <div>
-<h1><span class="kind-method">enclose</span> method 
+<h1><span class="kind-property">parent</span> property 
 </h1></div>
 
-    <section class="multi-line-signature">
-      
 
-<span class="returntype"><a href="https://api.dart.dev/stable/3.3.0/dart-core/Iterable-class.html">Iterable</a><span class="signature">&lt;<wbr><span class="type-parameter">T</span>&gt;</span></span>
-<span class="name ">enclose</span>(<wbr><ol class="parameter-list"><li><span class="parameter" id="enclose-param-side"><span class="type-annotation">T</span> <span class="parameter-name">side</span>, </span></li>
-<li><span class="parameter" id="enclose-param-inHead">{<span class="type-annotation"><a href="https://api.dart.dev/stable/3.3.0/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">inHead</span> = <span class="default-value">true</span>, </span></li>
-<li><span class="parameter" id="enclose-param-inTail"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.3.0/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">inTail</span> = <span class="default-value">true</span>}</span></li>
-</ol>)
+        
+<section id="getter">
 
-      
+<section class="multi-line-signature">
+  
+  <span class="returntype"><a href="https://api.dart.dev/stable/3.3.0/dart-core/Uri-class.html">Uri</a></span>
+  <span class="name ">parent</span>
+  
 
-    </section>
-    
-<section class="desc markdown">
-  <p>enclose item(s) to side of <a href="https://api.dart.dev/stable/3.3.0/dart-core/Iterable-class.html">Iterable</a></p>
 </section>
 
 
-    
+<section class="desc markdown">
+  <p>parent entry</p>
+</section>
+
+
 <section class="summary source-code" id="source">
   <h2><span>Implementation</span></h2>
-  <pre class="language-dart"><code class="language-dart">Iterable&lt;T&gt; enclose(T side, {bool inHead = true, bool inTail = true}) =&gt; (inHead ? &lt;T&gt;[side] : &lt;T&gt;[]).followedBy(this).followedBy(inTail ? &lt;T&gt;[side] : &lt;T&gt;[]);</code></pre>
+  <pre class="language-dart"><code class="language-dart">Uri get parent =&gt; this.replace(pathSegments: this.pathSegments.take(this.pathSegments.length - 1));</code></pre>
+</section>
+
 </section>
 
 
@@ -98,12 +99,12 @@
 <ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
     <li><a href="../../index.html">nsopoikha_wiki_tool</a></li>
     <li><a href="../../nsopoikha_wiki_tool/nsopoikha_wiki_tool-library.html">nsopoikha_wiki_tool</a></li>
-    <li><a href="../../nsopoikha_wiki_tool/Intercalater.html">Intercalater<span class="signature">&lt;<wbr><span class="type-parameter">T</span>&gt;</span></a></li>
-    <li class="self-crumb">enclose method</li>
+    <li><a href="../../nsopoikha_wiki_tool/UriCD.html">UriCD</a></li>
+    <li class="self-crumb">parent property</li>
 </ol>
 
 
-    <h5>Intercalater extension</h5>
+    <h5>UriCD extension</h5>
     <div id="dartdoc-sidebar-left-content"></div>
   </div><!--/.sidebar-offcanvas-->
 

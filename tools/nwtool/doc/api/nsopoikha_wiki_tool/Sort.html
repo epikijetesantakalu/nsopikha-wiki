@@ -4,8 +4,8 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
-  <meta name="description" content="API docs for the Intercalater extension from the nsopoikha_wiki_tool library, for the Dart programming language.">
-  <title>Intercalater extension - nsopoikha_wiki_tool library - Dart API</title>
+  <meta name="description" content="API docs for the Sort extension from the nsopoikha_wiki_tool library, for the Dart programming language.">
+  <title>Sort extension - nsopoikha_wiki_tool library - Dart API</title>
 
 
   
@@ -30,9 +30,9 @@
   <ol class="breadcrumbs gt-separated dark hidden-xs">
     <li><a href="../index.html">nsopoikha_wiki_tool</a></li>
     <li><a href="../nsopoikha_wiki_tool/nsopoikha_wiki_tool-library.html">nsopoikha_wiki_tool.dart</a></li>
-    <li class="self-crumb">Intercalater extension</li>
+    <li class="self-crumb">Sort extension</li>
   </ol>
-  <div class="self-name">Intercalater</div>
+  <div class="self-name">Sort</div>
   <form class="search navbar-right" role="search">
     <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
   </form>
@@ -53,23 +53,20 @@
     id="dartdoc-main-content"
     class="main-content"
     data-above-sidebar="nsopoikha_wiki_tool&#47;nsopoikha_wiki_tool-library-sidebar.html"
-    data-below-sidebar="nsopoikha_wiki_tool&#47;Intercalater-extension-sidebar.html">
+    data-below-sidebar="nsopoikha_wiki_tool&#47;Sort-extension-sidebar.html">
     <div>
-<h1><span class="kind-class">Intercalater&lt;<wbr><span class="type-parameter">T</span>&gt;</span> extension 
+<h1><span class="kind-class">Sort</span> extension 
  
 </h1></div>
 
     
-<section class="desc markdown">
-  <p>intercalate a filler int each of elements</p>
-</section>
 
     <section>
       <dl class="dl-horizontal">
         <dt>on</dt>
         <dd>
           <ul class="comma-separated clazz-relationships">
-              <li><a href="https://api.dart.dev/stable/3.3.0/dart-core/Iterable-class.html">Iterable</a><span class="signature">&lt;<wbr><span class="type-parameter">T</span>&gt;</span></li>
+              <li><a href="https://api.dart.dev/stable/3.3.0/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nsopoikha_wiki_tool/NWArticle-class.html">NWArticle</a></span>&gt;</span></li>
           </ul>
         </dd>
       </dl>
@@ -85,28 +82,28 @@
       id="instance-methods">
     <h2>Methods</h2>
     <dl class="callables">
-        <dt id="enclose" class="callable">
-  <span class="name"><a href="../nsopoikha_wiki_tool/Intercalater/enclose.html">enclose</a></span><span class="signature">(<wbr><span class="parameter" id="enclose-param-side"><span class="type-annotation">T</span> <span class="parameter-name">side</span>, </span><span class="parameter" id="enclose-param-inHead">{<span class="type-annotation"><a href="https://api.dart.dev/stable/3.3.0/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">inHead</span> = <span class="default-value">true</span>, </span><span class="parameter" id="enclose-param-inTail"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.3.0/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">inTail</span> = <span class="default-value">true</span>}</span>)
-    <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/3.3.0/dart-core/Iterable-class.html">Iterable</a><span class="signature">&lt;<wbr><span class="type-parameter">T</span>&gt;</span></span>
+        <dt id="cSort" class="callable">
+  <span class="name"><a href="../nsopoikha_wiki_tool/Sort/cSort.html">cSort</a></span><span class="signature">(<wbr><span class="parameter" id="cSort-param-method">{<span class="type-annotation"><a href="../nsopoikha_wiki_tool/SortMethod.html">SortMethod</a></span> <span class="parameter-name">method</span> = <span class="default-value">SortMethod.byName</span>, </span><span class="parameter" id="cSort-param-order"><span class="type-annotation"><a href="../nsopoikha_wiki_tool/SortOrder.html">SortOrder</a></span> <span class="parameter-name">order</span> = <span class="default-value">SortOrder.ascend</span>}</span>)
+    <span class="returntype parameter">&#8594; void</span>
   </span>
   
 
 </dt>
 <dd>
-  enclose item(s) to side of <a href="https://api.dart.dev/stable/3.3.0/dart-core/Iterable-class.html">Iterable</a>
+  
   
 
 </dd>
 
-        <dt id="intercalate" class="callable">
-  <span class="name"><a href="../nsopoikha_wiki_tool/Intercalater/intercalate.html">intercalate</a></span><span class="signature">(<wbr><span class="parameter" id="intercalate-param-filler"><span class="type-annotation">T</span> <span class="parameter-name">filler</span>, </span><span class="parameter" id="intercalate-param-inHead">{<span class="type-annotation"><a href="https://api.dart.dev/stable/3.3.0/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">inHead</span> = <span class="default-value">true</span>, </span><span class="parameter" id="intercalate-param-inTail"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.3.0/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">inTail</span> = <span class="default-value">true</span>}</span>)
-    <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/3.3.0/dart-core/Iterable-class.html">Iterable</a><span class="signature">&lt;<wbr><span class="type-parameter">T</span>&gt;</span></span>
+        <dt id="sorted" class="callable">
+  <span class="name"><a href="../nsopoikha_wiki_tool/Sort/sorted.html">sorted</a></span><span class="signature">(<wbr><span class="parameter" id="sorted-param-method">{<span class="type-annotation"><a href="../nsopoikha_wiki_tool/SortMethod.html">SortMethod</a></span> <span class="parameter-name">method</span> = <span class="default-value">SortMethod.byName</span>, </span><span class="parameter" id="sorted-param-order"><span class="type-annotation"><a href="../nsopoikha_wiki_tool/SortOrder.html">SortOrder</a></span> <span class="parameter-name">order</span> = <span class="default-value">SortOrder.ascend</span>}</span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/3.3.0/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../nsopoikha_wiki_tool/NWArticle-class.html">NWArticle</a></span>&gt;</span></span>
   </span>
   
 
 </dt>
 <dd>
-  intercalate a filler int each of elements of <a href="https://api.dart.dev/stable/3.3.0/dart-core/Iterable-class.html">Iterable</a>
+  
   
 
 </dd>
@@ -132,7 +129,7 @@
 <ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
     <li><a href="../index.html">nsopoikha_wiki_tool</a></li>
     <li><a href="../nsopoikha_wiki_tool/nsopoikha_wiki_tool-library.html">nsopoikha_wiki_tool</a></li>
-    <li class="self-crumb">Intercalater extension</li>
+    <li class="self-crumb">Sort extension</li>
 </ol>
 
 

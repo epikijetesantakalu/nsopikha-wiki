@@ -4,8 +4,8 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
-  <meta name="description" content="API docs for the enclose method from the Intercalater extension, for the Dart programming language.">
-  <title>enclose method - Intercalater extension - nsopoikha_wiki_tool library - Dart API</title>
+  <meta name="description" content="API docs for the compareTo method from the NWArticle class, for the Dart programming language.">
+  <title>compareTo method - NWArticle class - nsopoikha_wiki_tool library - Dart API</title>
 
 
   
@@ -30,10 +30,10 @@
   <ol class="breadcrumbs gt-separated dark hidden-xs">
     <li><a href="../../index.html">nsopoikha_wiki_tool</a></li>
     <li><a href="../../nsopoikha_wiki_tool/nsopoikha_wiki_tool-library.html">nsopoikha_wiki_tool.dart</a></li>
-    <li><a href="../../nsopoikha_wiki_tool/Intercalater.html">Intercalater<span class="signature">&lt;<wbr><span class="type-parameter">T</span>&gt;</span></a></li>
-    <li class="self-crumb">enclose method</li>
+    <li><a href="../../nsopoikha_wiki_tool/NWArticle-class.html">NWArticle</a></li>
+    <li class="self-crumb">compareTo method</li>
   </ol>
-  <div class="self-name">enclose</div>
+  <div class="self-name">compareTo</div>
   <form class="search navbar-right" role="search">
     <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
   </form>
@@ -54,34 +54,49 @@
   <div
       id="dartdoc-main-content"
       class="main-content"
-      data-above-sidebar="nsopoikha_wiki_tool&#47;Intercalater-extension-sidebar.html"
+      data-above-sidebar="nsopoikha_wiki_tool&#47;NWArticle-class-sidebar.html"
       data-below-sidebar="">
       <div>
-<h1><span class="kind-method">enclose</span> method 
+<h1><span class="kind-method">compareTo</span> method 
 </h1></div>
 
     <section class="multi-line-signature">
       
+  <div>
+    <ol class="annotation-list">
+        <li>@<a href="https://api.dart.dev/stable/3.3.0/dart-core/override-constant.html">override</a></li>
+    </ol>
+  </div>
 
-<span class="returntype"><a href="https://api.dart.dev/stable/3.3.0/dart-core/Iterable-class.html">Iterable</a><span class="signature">&lt;<wbr><span class="type-parameter">T</span>&gt;</span></span>
-<span class="name ">enclose</span>(<wbr><ol class="parameter-list"><li><span class="parameter" id="enclose-param-side"><span class="type-annotation">T</span> <span class="parameter-name">side</span>, </span></li>
-<li><span class="parameter" id="enclose-param-inHead">{<span class="type-annotation"><a href="https://api.dart.dev/stable/3.3.0/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">inHead</span> = <span class="default-value">true</span>, </span></li>
-<li><span class="parameter" id="enclose-param-inTail"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.3.0/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">inTail</span> = <span class="default-value">true</span>}</span></li>
+<span class="returntype"><a href="https://api.dart.dev/stable/3.3.0/dart-core/int-class.html">int</a></span>
+<span class="name ">compareTo</span>(<wbr><ol class="parameter-list"><li><span class="parameter" id="compareTo-param-other"><span class="type-annotation"><a href="../../nsopoikha_wiki_tool/NWArticle-class.html">NWArticle</a></span> <span class="parameter-name">other</span>, </span></li>
+<li><span class="parameter" id="compareTo-param-method">{<span class="type-annotation"><a href="../../nsopoikha_wiki_tool/SortMethod.html">SortMethod</a></span> <span class="parameter-name">method</span> = <span class="default-value">SortMethod.byName</span>, </span></li>
+<li><span class="parameter" id="compareTo-param-order"><span class="type-annotation"><a href="../../nsopoikha_wiki_tool/SortOrder.html">SortOrder</a></span> <span class="parameter-name">order</span> = <span class="default-value">SortOrder.ascend</span>}</span></li>
 </ol>)
 
-      
+      <div class="features"><span class="feature">override</span></div>
 
     </section>
     
 <section class="desc markdown">
-  <p>enclose item(s) to side of <a href="https://api.dart.dev/stable/3.3.0/dart-core/Iterable-class.html">Iterable</a></p>
+  <p>Compares this object to another object.</p>
+<p>Returns a value like a <a href="https://api.dart.dev/stable/3.3.0/dart-core/Comparator.html">Comparator</a> when comparing <code>this</code> to <code>other</code>.
+That is, it returns a negative integer if <code>this</code> is ordered before <code>other</code>,
+a positive integer if <code>this</code> is ordered after <code>other</code>,
+and zero if <code>this</code> and <code>other</code> are ordered together.</p>
+<p>The <code>other</code> argument must be a value that is comparable to this object.</p>
 </section>
 
 
     
 <section class="summary source-code" id="source">
   <h2><span>Implementation</span></h2>
-  <pre class="language-dart"><code class="language-dart">Iterable&lt;T&gt; enclose(T side, {bool inHead = true, bool inTail = true}) =&gt; (inHead ? &lt;T&gt;[side] : &lt;T&gt;[]).followedBy(this).followedBy(inTail ? &lt;T&gt;[side] : &lt;T&gt;[]);</code></pre>
+  <pre class="language-dart"><code class="language-dart">@override
+int compareTo(NWArticle other, {SortMethod method = SortMethod.byName, SortOrder order = SortOrder.ascend}) {
+  final int sign = switch (order) { SortOrder.ascend =&gt; 1, SortOrder.descend =&gt; -1 };
+  final int compareted = switch (method) { SortMethod.byDate =&gt; this.lastModified.compareTo(other.lastModified), SortMethod.byName =&gt; this.title.compareTo(other.title), SortMethod.byPath =&gt; this.path.path.compareTo(other.path.path) };
+  return sign * compareted;
+}</code></pre>
 </section>
 
 
@@ -98,12 +113,12 @@
 <ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
     <li><a href="../../index.html">nsopoikha_wiki_tool</a></li>
     <li><a href="../../nsopoikha_wiki_tool/nsopoikha_wiki_tool-library.html">nsopoikha_wiki_tool</a></li>
-    <li><a href="../../nsopoikha_wiki_tool/Intercalater.html">Intercalater<span class="signature">&lt;<wbr><span class="type-parameter">T</span>&gt;</span></a></li>
-    <li class="self-crumb">enclose method</li>
+    <li><a href="../../nsopoikha_wiki_tool/NWArticle-class.html">NWArticle</a></li>
+    <li class="self-crumb">compareTo method</li>
 </ol>
 
 
-    <h5>Intercalater extension</h5>
+    <h5>NWArticle class</h5>
     <div id="dartdoc-sidebar-left-content"></div>
   </div><!--/.sidebar-offcanvas-->
 

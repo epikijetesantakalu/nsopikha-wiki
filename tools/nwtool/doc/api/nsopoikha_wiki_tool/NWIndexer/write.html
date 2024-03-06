@@ -77,7 +77,7 @@
 <section class="summary source-code" id="source">
   <h2><span>Implementation</span></h2>
   <pre class="language-dart"><code class="language-dart">void write([bool forceAnalyze = false]) {
-  File f = File.fromUri(Uri.file(this.base.path).cd([this.indexFilename]));
+  File f = File.fromUri(this.base.uri.cd([this.indexFilename]));
   if (!f.existsSync()) {
     f.createSync();
   }
