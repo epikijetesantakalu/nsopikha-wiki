@@ -7,7 +7,7 @@ window.onload = () => {
 };
 function insertTemplate(file, className) {
     const req = new XMLHttpRequest();
-    req.open("GET", `../layouts/${file}.html`, true);
+    req.open("GET", `layouts/${file}.html`, true);
     req.onreadystatechange = () => {
         if (req.readyState === 4 && req.status === 200) {
             const HTML = req.responseText;
