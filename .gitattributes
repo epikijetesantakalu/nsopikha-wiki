@@ -1,0 +1,3 @@
+*.tsconfig linguist-vendored
+*.js linguist-generated
+tools/nwtools/doc/api/** linguist-documentation
