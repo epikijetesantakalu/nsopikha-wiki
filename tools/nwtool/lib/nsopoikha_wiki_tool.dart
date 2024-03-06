@@ -5,15 +5,17 @@ import 'package:html/dom.dart';
 import 'package:intl/intl.dart';
 import 'package:yaml/yaml.dart';
 import 'package:yaml_writer/yaml_writer.dart';
+import 'package:timezone/standalone.dart';
 
 class NWIndexer {
   final Directory base;
   final String articleDir;
   final String indexFilename;
+  final Location timezone;
   final StrIOIF io;
   String _yst = "";
   (int count, List<(String name, String title, Uri path)> element)? _index;
-  NWIndexer(this.base, this.indexFilename, this.articleDir, this.io);
+  NWIndexer(this.base, this.indexFilename, this.articleDir, this.timezone, this.io);
   (int count, List<(String name, String title, Uri path)> element) list([bool forceAnalyze = false]) {
     if (!forceAnalyze) {
       try {
@@ -65,11 +67,13 @@ class NWIndexer {
 class NWIndexDoc {
   final Directory base;
   final String indexFilename;
+  final Location timezone;
   String _yst = "";
-  NWIndexDoc(this.base, this.indexFilename);
+  NWIndexDoc(this.base, this.indexFilename, this.timezone);
   NWIndexDoc.fromindexer(NWIndexer ix, [String? indexFilename])
       : this.base = ix.base,
-        this.indexFilename = indexFilename ?? ix.indexFilename {
+        this.indexFilename = indexFilename ?? ix.indexFilename,
+        this.timezone = ix.timezone {
     this._yst = ix.listAsMd();
   }
 
@@ -78,7 +82,7 @@ class NWIndexDoc {
     if (!f.existsSync()) {
       f.createSync();
     }
-    f.writeAsStringSync("# ンソピハワールドWiki ページ一覧\n\n機械式インデックス\n\n更新日: ${DateFormat("yyyy.MM.dd HH:mm").format(DateTime.now())}\n\n${this._yst}");
+    f.writeAsStringSync("# ンソピハワールドWiki ページ一覧\n\n機械式インデックス\n\n更新日: ${DateFormat("yyyy.MM.dd HH:mm").format(TZDateTime.now(this.timezone))}\n\n${this._yst}");
   }
 }
 
