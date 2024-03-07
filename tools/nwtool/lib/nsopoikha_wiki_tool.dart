@@ -17,8 +17,9 @@ class NWArticle implements Comparable<NWArticle> {
   List<String> emphasized;
   NWArticle(this.title, this.path, this.links, this.keywords, this.emphasized);
   factory NWArticle._fromSortee(_NWArticleSortee _s) => _s as NWArticle;
-  factory NWArticle.parseFile(Uri path) {
-    throw UnimplementedError();
+  factory NWArticle.parseFile(Uri path, StrIOIF io) {
+    NWArticleParser p = NWArticleParser(io, path);
+    return NWArticle(p.title, path, p.links.toList(), p.keywords.toList(), p.emphasized.toList());
   }
   String get name => this.path.pathSegments.last;
   DateTime get lastModified => File(this.path.path).lastModifiedSync();
@@ -49,6 +50,8 @@ extension Sort on List<NWArticle> {
   void cSort({SortMethod method = SortMethod.byName, SortOrder order = SortOrder.ascend}) {
     List<_NWArticleSortee> e = this._ees(method: method, order: order);
     e.sort();
+    this.clear();
+    this.addAll(e);
   }
 
   List<NWArticle> sorted({SortMethod method = SortMethod.byName, SortOrder order = SortOrder.ascend}) {
@@ -102,7 +105,7 @@ class MarkupGenerator {
       base.add(this.attrEscape(id));
     }
     if (attr != null) {
-      base.addAll(attr.entries.map<String>((MapEntry<String, String> e) => "${e.key}\"${this.attrEscape(e.value)}\""));
+      base.addAll(attr.entries.map<String>((MapEntry<String, String> e) => "${e.key}=\"${this.attrEscape(e.value)}\""));
     }
     final String content = base.join(" ");
     return child == null ? this.wrapATBracket(content, single: true) : this.wrapATBracket(content) + this.indent(child, wrapLn: true) + this.wrapATBracket(tagName, closing: true);
@@ -154,7 +157,7 @@ class NWIndexer {
   }
 
   String listFmt([bool forceAnalyze = false]) => this.list(forceAnalyze).$2.map<String>(((String name, String title, Uri path) e) => "* html: ${e.$1}\t\t title: ${e.$2}").join("\n");
-  String listAsHtml([bool forceAnalyze = false]) => "<div>\n" + this.list(forceAnalyze).$2.map<String>(((String name, String title, Uri path) e) => "  <a href=\"./wiki/${e.$1}\">${e.$2}</a>").join("\n") + "\n</div>";
+  String listAsHtml([bool forceAnalyze = false]) => this.mgen.makeTag("ul", child: this.list(forceAnalyze).$2.map<String>(((String name, String title, Uri path) e) => this.mgen.makeTag("li", child: this.mgen.makeTag("br") + this.mgen.ln + this.mgen.makeTag("a", attr: <String, String>{"href": "./wiki/${e.$1}"}, child: e.$2))).join(this.mgen.ln));
   String listAsMd([bool forceAnalyze = false]) => this.list(forceAnalyze).$2.map<String>(((String name, String title, Uri path) e) => "- [${e.$2} - ${e.$1}](./wiki/${e.$1})").join("\n");
 
   /// Output
