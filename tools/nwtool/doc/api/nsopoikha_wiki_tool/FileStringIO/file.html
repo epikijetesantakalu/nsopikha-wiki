@@ -4,8 +4,8 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
-  <meta name="description" content="API docs for the write method from the FileStringIO class, for the Dart programming language.">
-  <title>write method - FileStringIO class - nsopoikha_wiki_tool library - Dart API</title>
+  <meta name="description" content="API docs for the file property from the FileStringIO class, for the Dart programming language.">
+  <title>file property - FileStringIO class - nsopoikha_wiki_tool library - Dart API</title>
 
 
   
@@ -31,9 +31,9 @@
     <li><a href="../../index.html">nsopoikha_wiki_tool</a></li>
     <li><a href="../../nsopoikha_wiki_tool/nsopoikha_wiki_tool-library.html">nsopoikha_wiki_tool.dart</a></li>
     <li><a href="../../nsopoikha_wiki_tool/FileStringIO-class.html">FileStringIO</a></li>
-    <li class="self-crumb">write method</li>
+    <li class="self-crumb">file property</li>
   </ol>
-  <div class="self-name">write</div>
+  <div class="self-name">file</div>
   <form class="search navbar-right" role="search">
     <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
   </form>
@@ -57,35 +57,29 @@
       data-above-sidebar="nsopoikha_wiki_tool&#47;FileStringIO-class-sidebar.html"
       data-below-sidebar="">
       <div>
-<h1><span class="kind-method">write</span> method 
+<h1><span class="kind-property">file</span> property 
 </h1></div>
 
-    <section class="multi-line-signature">
-      
-  <div>
-    <ol class="annotation-list">
-        <li>@<a href="https://api.dart.dev/stable/3.3.0/dart-core/override-constant.html">override</a></li>
-    </ol>
-  </div>
 
-<span class="returntype">void</span>
-<span class="name ">write</span>(<wbr><ol class="parameter-list"><li><span class="parameter" id="write-param-data"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.3.0/dart-core/String-class.html">String</a></span> <span class="parameter-name">data</span></span></li>
-</ol>)
+        
+<section id="getter">
 
-      <div class="features"><span class="feature">override</span></div>
+<section class="multi-line-signature">
+  
+  <span class="returntype"><a href="https://api.dart.dev/stable/3.3.0/dart-io/File-class.html">File</a></span>
+  <span class="name ">file</span>
+  
 
-    </section>
-    
+</section>
 
 
-    
+
+
 <section class="summary source-code" id="source">
   <h2><span>Implementation</span></h2>
-  <pre class="language-dart"><code class="language-dart">@override
-void write(String data) {
-  this.createIfNotExists;
-  this.file.writeAsStringSync(data);
-}</code></pre>
+  <pre class="language-dart"><code class="language-dart">File get file =&gt; File.fromUri(this.uri);</code></pre>
+</section>
+
 </section>
 
 
@@ -103,7 +97,7 @@ void write(String data) {
     <li><a href="../../index.html">nsopoikha_wiki_tool</a></li>
     <li><a href="../../nsopoikha_wiki_tool/nsopoikha_wiki_tool-library.html">nsopoikha_wiki_tool</a></li>
     <li><a href="../../nsopoikha_wiki_tool/FileStringIO-class.html">FileStringIO</a></li>
-    <li class="self-crumb">write method</li>
+    <li class="self-crumb">file property</li>
 </ol>
 
 

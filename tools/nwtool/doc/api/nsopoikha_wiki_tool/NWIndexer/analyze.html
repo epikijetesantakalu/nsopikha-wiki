@@ -77,7 +77,7 @@
   <h2><span>Implementation</span></h2>
   <pre class="language-dart"><code class="language-dart">void analyze() {
   List&lt;FileSystemEntity&gt; dl = Directory.fromUri(this.base.uri.cd([this.articleDir])).listSync(followLinks: true).where((FileSystemEntity e) =&gt; FileSystemEntity.isFileSync(e.path)).where((FileSystemEntity e) =&gt; (e.path.endsWith(&quot;.html&quot;) || e.path.endsWith(&quot;.htm&quot;)) &amp;&amp; !(e.uri.pathSegments.last == &quot;index.html&quot; || e.uri.pathSegments.last == &quot;index.htm&quot;)).toList();
-  this._index = (dl.length, dl.map&lt;(String name, String title, Uri path)&gt;((FileSystemEntity e) =&gt; (e.uri.pathSegments.last, titleOf(e.uri), e.uri)).toList());
+  this._index = (dl.length, dl.map&lt;(String name, String title, Uri path)&gt;((FileSystemEntity e) =&gt; (e.uri.pathSegments.last, NWArticleParser(this.io, e.uri).title, e.uri)).toList());
 }</code></pre>
 </section>
 

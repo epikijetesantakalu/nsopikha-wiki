@@ -82,8 +82,10 @@
   <h2><span>Implementation</span></h2>
   <pre class="language-dart"><code class="language-dart">@override
 String load() {
-  &#47;&#47; TODO: implement load
-  throw UnimplementedError();
+  if (this.isExists) {
+    return this.file.readAsStringSync();
+  }
+  return &quot;&quot;;
 }</code></pre>
 </section>
 
