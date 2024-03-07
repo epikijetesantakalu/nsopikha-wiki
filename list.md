@@ -2,7 +2,7 @@
 
 機械式インデックス
 
-更新日: 2024.03.08 02:12
+更新日: 2024.03.08 02:23
 
 - [エピキイェテサンタカルケタ - epikijetesantakaluKeta.html](./wiki/epikijetesantakaluKeta.html)
 - [かえる2193 - kaeru2193.html](./wiki/kaeru2193.html)
@@ -11,6 +11,7 @@
 - [ンソピ場 - nsopiba.html](./wiki/nsopiba.html)
 - [ンソピ場語 - nsopibash.html](./wiki/nsopibash.html)
 - [ンソピハ - nsopikha.html](./wiki/nsopikha.html)
+- [ンソピハ日記 - nsopikhanikki.html](./wiki/nsopikhanikki.html)
 - [パコラ - pakola.html](./wiki/pakola.html)
 - [ぴは - piha.html](./wiki/piha.html)
 - [ぽなぽなジャパン - ponaponajapan.html](./wiki/ponaponajapan.html)

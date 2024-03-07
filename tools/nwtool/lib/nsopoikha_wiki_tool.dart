@@ -157,7 +157,7 @@ class NWIndexer {
   }
 
   String listFmt([bool forceAnalyze = false]) => this.list(forceAnalyze).$2.map<String>(((String name, String title, Uri path) e) => "* html: ${e.$1}\t\t title: ${e.$2}").join("\n");
-  String listAsHtml([bool forceAnalyze = false]) => this.mgen.makeTag("ul", child: this.list(forceAnalyze).$2.map<String>(((String name, String title, Uri path) e) => this.mgen.makeTag("li", child: this.mgen.makeTag("br") + this.mgen.ln + this.mgen.makeTag("a", attr: <String, String>{"href": "./wiki/${e.$1}"}, child: e.$2))).join(this.mgen.ln));
+  String listAsHtml([bool forceAnalyze = false]) => this.mgen.makeTag("ul", child: this.list(forceAnalyze).$2.map<String>(((String name, String title, Uri path) e) => this.mgen.makeTag("li", child: this.mgen.makeTag("a", attr: <String, String>{"href": "./wiki/${e.$1}"}, child: e.$2))).join(this.mgen.ln));
   String listAsMd([bool forceAnalyze = false]) => this.list(forceAnalyze).$2.map<String>(((String name, String title, Uri path) e) => "- [${e.$2} - ${e.$1}](./wiki/${e.$1})").join("\n");
 
   /// Output
