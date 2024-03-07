@@ -2,7 +2,7 @@
 
 機械式インデックス
 
-更新日: 2024.03.08 01:37
+更新日: 2024.03.08 01:40
 
 - [エピキイェテサンタカルケタ - epikijetesantakaluKeta.html](./wiki/epikijetesantakaluKeta.html)
 - [かえる2193 - kaeru2193.html](./wiki/kaeru2193.html)
@@ -19,6 +19,7 @@
 - [ぷか - puka.html](./wiki/puka.html)
 - [ロトカス語 - rotokas.html](./wiki/rotokas.html)
 - [佐藤陽花 - satoharuka.html](./wiki/satoharuka.html)
-- [せめりせめあぬせめ - semelisemeanuseme.html](./wiki/semelisemeanuseme.html)
+- [seme li seme ala seme anu seme?/h1>
+         - semelisemeanuseme.html](./wiki/semelisemeanuseme.html)
 - [トキポナ - tokipona.html](./wiki/tokipona.html)
 - [ゆずるそふぃあ - yuzurusofia.html](./wiki/yuzurusofia.html)

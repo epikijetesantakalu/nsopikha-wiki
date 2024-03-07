@@ -29,7 +29,9 @@
 - html: 'satoharuka.html'
   title: '佐藤陽花'
 - html: 'semelisemeanuseme.html'
-  title: 'せめりせめあぬせめ'
+  title: |-
+    seme li seme ala seme anu seme?/h1>
+            
 - html: 'tokipona.html'
   title: 'トキポナ'
 - html: 'yuzurusofia.html'
