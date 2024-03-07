@@ -2,16 +2,26 @@
 
 ## How to use
 
-### (暫定)
+### セットアップ(はじめのみ行う)
 
 1. Dart SDK(なるべく最新、少なくともv3.x.x)をインストールする(ex. ダウンロード & 環境変数)
-1. このReadMeのあるディレクトリ(`/tools/nwtool`)に`cd`する
-1. `dart run`
 
-## Commands -- All in DEV
+### セットアップ(プログラムがアップデートされるたびに行う)
+
+1. このReadMeのあるディレクトリ(`/tools/nwtool`)に`cd`する
+1. `dart pub global activate -spath .`
+
+### 実行
+
+1. `nwtool` 或いはそのほか設定されたコマンドをたたく
+
+## Commands -- All in DEV except `nwtool`(no-arg)
+
+`netool`  
+何もサブコマンドも引数も与えない場合、従前のツールのコードが実行される。`nwtool analyze`として予定される挙動をしめすが、当該機能とは一致しないβ版である。表示はlist, html, yaml, json。
 
 `nwtool analyze`  
-記事ファイルを解析しインデックスデータを生成・表示及びインデックスファイルのへの書き込みを行う。
+記事ファイルを解析しインデックスデータを生成・表示及びインデックスファイル(yaml, json, md)への書き込みを行う。
 
 `nwtool load`  
 インデックスファイルの内容を読み込み表示する。
