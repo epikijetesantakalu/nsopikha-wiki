@@ -12,7 +12,7 @@ import 'package:timezone/standalone.dart';
 class NWArticle implements Comparable<NWArticle> {
   String title;
   Uri path;
-  List<String> links;
+  List<(String, Uri)> links;
   List<String> keywords;
   List<String> emphasized;
   NWArticle(this.title, this.path, this.links, this.keywords, this.emphasized);
@@ -70,15 +70,62 @@ enum SortMethod { byName, byPath, byDate }
 
 enum SortOrder { ascend, descend }
 
+class NWArticleParser {
+  final StrIOIF io;
+  final Uri uri;
+  NWArticleParser(this.io, this.uri);
+  Document get document => parse(File.fromUri(this.uri).readAsStringSync());
+
+  /// get title of article html (first h1)
+  String get title => this.elementsOnBodyInTag("h1").first.text;
+  Iterable<String> get keywords => this.elementsOnBodyQuery(tagName: "span", className: "keywords", leafOnly: true).map<List<String>>((Element e) => e.text.split(RegExp(", ?"))).expand((List<String> e) => e).toSet().toList();
+  Iterable<String> get emphasized => this.elementsOnBodyQuery(tagName: "strong", leafOnly: true).followedBy(this.elementsOnBodyQuery(tagName: "em", leafOnly: true)).followedBy(this.elementsOnBodyQuery(tagName: "i", leafOnly: true)).followedBy(this.elementsOnBodyQuery(tagName: "b", leafOnly: true)).map<String>((Element e) => e.text).toSet().toList();
+  Iterable<(String, Uri)> get links => NWArticleParser.toLeafWhere(this.elementsOnBodyQuery(tagName: "a", leafOnly: true)).map((Element e) => (e.text, Uri.file(e.attributes["href"]!)));
+  Iterable<Element> get elementsOnBody => this.document.body!.children;
+  Iterable<Element> elementsOnBodyInTag(String tagName, {bool leafOnly = false}) => NWArticleParser.toLeafWhere(this.elementsOnBody.where((Element e) => e.localName?.toLowerCase() == tagName.toLowerCase()).toList());
+  Iterable<Element> elementsOnBodyQuery({String? tagName, String? className, String? idName, bool leafOnly = false}) => (tagName == null ? NWArticleParser.toLeafWhere(this.elementsOnBody, leafOnly) : this.elementsOnBodyInTag(tagName, leafOnly: leafOnly)).where((Element e) {
+        return false;
+      });
+  static Iterable<Element> toLeafWhere(Iterable<Element> e, [bool leafOnly = false]) => leafOnly ? e.where((Element e) => false) : e;
+}
+
+class MarkupGenerator {
+  final int indentCount;
+  final String ln;
+  MarkupGenerator({this.indentCount = 2, this.ln = "\n"});
+  String makeTag(String tagName, {String? className, String? id, String? child, Map<String, String>? attr}) {
+    final List<String> base = <String>[tagName];
+    if (className != null) {
+      base.add(this.attrEscape(className));
+    }
+    if (id != null) {
+      base.add(this.attrEscape(id));
+    }
+    if (attr != null) {
+      base.addAll(attr.entries.map<String>((MapEntry<String, String> e) => "${e.key}\"${this.attrEscape(e.value)}\""));
+    }
+    final String content = base.join(" ");
+    return child == null ? this.wrapATBracket(content, single: true) : this.wrapATBracket(content) + this.indent(child, wrapLn: true) + this.wrapATBracket(tagName, closing: true);
+  }
+
+  String wrapATBracket(String init, {bool closing = false, bool single = false}) => "<${closing ? "/" : ""}$init${single ? " /" : ""}>";
+  String indent(String lines, {bool wrapLn = false}) => (wrapLn ? this.ln : "") + lines.split(this.ln).map<String>((String l) => " " * this.indentCount + l).join(this.ln) + (wrapLn ? this.ln : "");
+  String attrEscape(String target) => HtmlEscape(HtmlEscapeMode.attribute).convert(target);
+}
+
 class NWIndexer {
   final Directory base;
   final String articleDir;
   final String indexFilename;
   final Location timezone;
   final StrIOIF io;
+  final MarkupGenerator mgen;
   String _yst = "";
   (int count, List<(String name, String title, Uri path)> element)? _index;
-  NWIndexer(this.base, this.indexFilename, this.articleDir, this.timezone, this.io);
+  NWIndexer(Directory base, String indexFilename, this.articleDir, this.timezone, this.mgen, StrIOIF Function(Uri) ioToFileOf)
+      : this.io = ioToFileOf(Uri.file(base.path).cd([indexFilename])),
+        this.base = base,
+        this.indexFilename = indexFilename;
   (int count, List<(String name, String title, Uri path)> element) list([bool forceAnalyze = false]) {
     if (!forceAnalyze) {
       try {
@@ -103,7 +150,7 @@ class NWIndexer {
 
   void analyze() {
     List<FileSystemEntity> dl = Directory.fromUri(this.base.uri.cd([this.articleDir])).listSync(followLinks: true).where((FileSystemEntity e) => FileSystemEntity.isFileSync(e.path)).where((FileSystemEntity e) => (e.path.endsWith(".html") || e.path.endsWith(".htm")) && !(e.uri.pathSegments.last == "index.html" || e.uri.pathSegments.last == "index.htm")).toList();
-    this._index = (dl.length, dl.map<(String name, String title, Uri path)>((FileSystemEntity e) => (e.uri.pathSegments.last, titleOf(e.uri), e.uri)).toList());
+    this._index = (dl.length, dl.map<(String name, String title, Uri path)>((FileSystemEntity e) => (e.uri.pathSegments.last, NWArticleParser(this.io, e.uri).title, e.uri)).toList());
   }
 
   String listFmt([bool forceAnalyze = false]) => this.list(forceAnalyze).$2.map<String>(((String name, String title, Uri path) e) => "* html: ${e.$1}\t\t title: ${e.$2}").join("\n");
@@ -182,15 +229,28 @@ typedef StrIOIF = StringIOInterface;
 typedef BinIOIF = BinaryIOInterface;
 
 class FileStringIO extends StrIOIF {
+  final Uri uri;
+  FileStringIO(this.uri);
+  File get file => File.fromUri(this.uri);
+  void get createIfNotExists {
+    if (!this.isExists) {
+      this.file.createSync();
+    }
+  }
+
+  bool get isExists => this.file.existsSync();
   @override
   String load() {
-    // TODO: implement load
-    throw UnimplementedError();
+    if (this.isExists) {
+      return this.file.readAsStringSync();
+    }
+    return "";
   }
 
   @override
   void write(String data) {
-    // TODO: implement write
+    this.createIfNotExists;
+    this.file.writeAsStringSync(data);
   }
 }
 
@@ -272,10 +332,8 @@ extension Intercalater<T> on Iterable<T> {
   Iterable<T> enclose(T side, {bool inHead = true, bool inTail = true}) => (inHead ? <T>[side] : <T>[]).followedBy(this).followedBy(inTail ? <T>[side] : <T>[]);
 }
 
-/// get title of article html (first h1)
-String titleOf(Uri u) {
-  Document d = parse(File.fromUri(u).readAsStringSync());
-  return d.body!.children.where((Element e) => e.localName?.toLowerCase() == "h1").first.text;
+extension StringRepeat on String {
+  List<String> repeats(int count) => List<String>.filled(count, this);
 }
 
 ///unique error for nwtool
