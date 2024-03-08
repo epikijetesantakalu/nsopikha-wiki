@@ -5,6 +5,8 @@
     xhr.onload = () => {
         const pageData = JSON.parse(xhr.response);
         const epikuElem = document.getElementById("epikuContent");
+        const numberElem = document.getElementById("articleCount");
+        numberElem.innerHTML = pageData.length;
         const epikuID = Math.floor(Math.random() * pageData.length);
         const epiku = pageData[epikuID];
         const pageXhr = new XMLHttpRequest();

@@ -68,6 +68,11 @@ body {
     margin-left: 0.5rem;
 }
 
+.topBox .number {
+    font-size: 0.95rem;
+    text-align: right;
+}
+
 .topBox .topBoxImg {
     height: 40px;
     width: 40px;
