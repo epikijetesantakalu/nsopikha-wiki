@@ -2,7 +2,7 @@
 
 機械式インデックス
 
-更新日: 2024.03.08 02:52
+更新日: 2024.03.08 18:53
 
 - [エピキイェテサンタカルケタ - epikijetesantakaluKeta.html](./wiki/epikijetesantakaluKeta.html)
 - [かえる2193 - kaeru2193.html](./wiki/kaeru2193.html)
@@ -14,6 +14,7 @@
 - [ンソピハ日記 - nsopikhanikki.html](./wiki/nsopikhanikki.html)
 - [パコラ - pakola.html](./wiki/pakola.html)
 - [ぴは - piha.html](./wiki/piha.html)
+- [ぴは主義 - pihaism.html](./wiki/pihaism.html)
 - [ぽなぽなジャパン - ponaponajapan.html](./wiki/ponaponajapan.html)
 - [ポニョ語 - ponjo.html](./wiki/ponjo.html)
 - [ぽんすけ - ponsuke.html](./wiki/ponsuke.html)
