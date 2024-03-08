@@ -1,6 +1,6 @@
 {
 const xhr = new XMLHttpRequest()
-xhr.open('GET', "/index.json")
+xhr.open('GET', "/nsopikha-wiki/index.json")
 
 xhr.onload = () => {
     const pageData = JSON.parse(xhr.response)
@@ -10,7 +10,7 @@ xhr.onload = () => {
     const epiku = pageData[epikuID]
 
     const pageXhr = new XMLHttpRequest()
-    pageXhr.open('GET', `/wiki/${epiku.html}`)
+    pageXhr.open('GET', `/nsopikha-wiki/wiki/${epiku.html}`)
 
     pageXhr.onload = () => {
         const epikuContent: string = pageXhr.response
@@ -25,7 +25,7 @@ xhr.onload = () => {
         epikuElem!.innerHTML =
             `
             <span class="epikuTitle">
-                <a href="/wiki/${epiku.html}">
+                <a href="/nsopikha-wiki/wiki/${epiku.html}">
                     ${epiku.title}
                 </a>
             </span>
