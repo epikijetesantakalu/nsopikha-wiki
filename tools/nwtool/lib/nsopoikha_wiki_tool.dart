@@ -1,12 +1,39 @@
-import 'dart:convert';
-import 'dart:io';
+import "dart:convert";
+import "dart:io";
 
-import 'package:html/parser.dart';
-import 'package:html/dom.dart';
-import 'package:intl/intl.dart';
-import 'package:yaml/yaml.dart';
-import 'package:yaml_writer/yaml_writer.dart';
-import 'package:timezone/standalone.dart';
+import "package:html/parser.dart";
+import "package:html/dom.dart";
+import "package:intl/intl.dart";
+import "package:yaml/yaml.dart";
+import "package:yaml_writer/yaml_writer.dart";
+import "package:timezone/standalone.dart";
+
+class NWOGPBuilder {
+  MarkupGenerator mgen;
+  NWOGPBuilder(this.mgen);
+
+  String build(String title, int indentCount) {
+    final List<String> headers = <String>[];
+    headers.add(this.mgen.makeTag("title", child: title));
+    headers.add(this.metaBuildOGP("description", "Ketaが管理人の非公式Wikiです。"));
+    headers.add(this.metaBuildOGP("title", title));
+    headers.add(this.metaBuildOGP("site_name", "ンソピハワールドWiki"));
+    headers.add(this.metaBuildOGP("image", "https://epikijetesantakalu.github.io/nsopikha-wiki/images/ogp-image.png"));
+    headers.add(this.metaBuildOGP("image:width", "1200"));
+    headers.add(this.metaBuildOGP("image:height", "630"));
+    headers.add(this.metaBuildOGP("type", "website"));
+    headers.add(this.metaBuildOGP("url", "https://epikijetesantakalu.github.io/nsopikha-wiki"));
+    headers.add(this.metaBuildOGP("theme-color", "#fafb7c"));
+    return this.mgen.indentM(headers.join(this.mgen.ln), indentCount);
+  }
+
+  String metaBuildOGP(String prop, String content) => this.metaBuild("og", prop, content);
+  String metaBuild(String propNS, String prop, String content) => this.mgen.makeTag("meta", attr: <String, String>{"property": "$propNS:$prop", "content": content});
+}
+
+void build(NWIndexer ix) {
+  final String ixl = ix.build();
+}
 
 /// article information
 class NWArticle implements Comparable<NWArticle> {
@@ -27,8 +54,8 @@ class NWArticle implements Comparable<NWArticle> {
   @override
   int compareTo(NWArticle other, {SortMethod method = SortMethod.byName, SortOrder order = SortOrder.ascend}) {
     final int sign = switch (order) { SortOrder.ascend => 1, SortOrder.descend => -1 };
-    final int compareted = switch (method) { SortMethod.byDate => this.lastModified.compareTo(other.lastModified), SortMethod.byName => this.title.compareTo(other.title), SortMethod.byPath => this.path.path.compareTo(other.path.path) };
-    return sign * compareted;
+    final int compared = switch (method) { SortMethod.byDate => this.lastModified.compareTo(other.lastModified), SortMethod.byName => this.title.compareTo(other.title), SortMethod.byPath => this.path.path.compareTo(other.path.path) };
+    return sign * compared;
   }
 }
 
@@ -113,6 +140,11 @@ class MarkupGenerator {
 
   String wrapATBracket(String init, {bool closing = false, bool single = false}) => "<${closing ? "/" : ""}$init${single ? " /" : ""}>";
   String indent(String lines, {bool wrapLn = false}) => (wrapLn ? this.ln : "") + lines.split(this.ln).map<String>((String l) => " " * this.indentCount + l).join(this.ln) + (wrapLn ? this.ln : "");
+  String indentM(String lines, int indentCount, {bool wrapLn = false}) {
+    if (indentCount <= 0) return lines;
+    return indentM(this.indent(lines), indentCount - 1);
+  }
+
   String attrEscape(String target) => HtmlEscape(HtmlEscapeMode.attribute).convert(target);
 }
 
@@ -194,6 +226,10 @@ class NWIndexer {
     }
     f.writeAsStringSync(this.outAsJson(forceAnalyze));
   }
+
+  String build() {
+    return "";
+  }
 }
 
 class NWIndexDoc {
@@ -202,7 +238,7 @@ class NWIndexDoc {
   final Location timezone;
   String _yst = "";
   NWIndexDoc(this.base, this.indexFilename, this.timezone);
-  NWIndexDoc.fromindexer(NWIndexer ix, [String? indexFilename])
+  NWIndexDoc.fromIndexer(NWIndexer ix, [String? indexFilename])
       : this.base = ix.base,
         this.indexFilename = indexFilename ?? ix.indexFilename,
         this.timezone = ix.timezone {
