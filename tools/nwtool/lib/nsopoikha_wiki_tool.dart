@@ -74,6 +74,9 @@ class NWArticle implements Comparable<NWArticle> {
     final int compared = switch (method) { SortMethod.byDate => this.lastModified.compareTo(other.lastModified), SortMethod.byName => this.title.compareTo(other.title), SortMethod.byPath => this.path.path.compareTo(other.path.path) };
     return sign * compared;
   }
+
+  @override
+  String toString() => this.asStringMap().entries.map<String>((MapEntry<String, String> e) => "${e.key}: ${e.value}").join("\n");
 }
 
 class _NWArticleSortee extends NWArticle {
@@ -293,6 +296,8 @@ class NWIndexer {
   final MarkupGenerator mgen;
   String _yst = "";
   (int count, List<NWArticle> element)? _index;
+  List<NWArticle> get x_index => this._index?.$2 ?? <NWArticle>[];
+  int get x_len => this._index?.$1 ?? 0;
   NWIndexer(Directory base, this.timezone, this.mgen, StrIOIF Function(Uri) ioToFileOf, {required String indexFilename, required String articleDir, required String redirectFilename})
       : this.ioToFileOf = ioToFileOf,
         this.ioIndex = ioToFileOf(Uri.file(base.path).cd([indexFilename])),
@@ -305,7 +310,7 @@ class NWIndexer {
   (int count, List<NWArticle>) list([bool forceAnalyze = false]) {
     if (!forceAnalyze) {
       try {
-        this.load(this.indexFilename);
+        this.load();
       } on NWError catch (_) {
         this.analyze();
       }
@@ -315,9 +320,41 @@ class NWIndexer {
     return this._index!;
   }
 
-  void load(String filename) {
-    final YamlDocument doc = loadYamlDocument(this.ioIndex.load());
-    doc.contents;
+  void load() {
+    final String src = this.ioIndex.load();
+    final YamlDocument doc = loadYamlDocument(src);
+    YamlNode n = doc.contents;
+    if (n is YamlList) {
+      Iterable<NWArticle> art = n.nodes.map<NWArticle>((YamlNode n2) {
+        if (n2 is YamlMap) {
+          Map<String, String> m = n2.nodes.map<String, String>((Object? key, YamlNode n3) {
+            if (key is String && n3 is YamlScalar) {
+              if (n3.value is String) {
+                return MapEntry<String, String>(key, n3.value);
+              }
+            }
+            throw NWError();
+          });
+          if (<String>["title", "html", "lastModified", "links", "keywords", "emphasized"].every((String e) => m.containsKey(e))) {
+            return NWArticle(
+                m["title"]!,
+                this.base.cd([this.articleDir, m["html"]!]).uri,
+                m["links"]!.split(", ").map<(String, Uri)>((String e) {
+                  List<String> s = e.split(" -> ").toList();
+                  return (s[0], Uri.parse(s[1]));
+                }).toList(),
+                m["keywords"]!.split(", ").toList(),
+                m["emphasized"]!.split(", ").toList());
+          } else {
+            throw NWError();
+          }
+        }
+        throw NWError();
+      }).whereType<NWArticle>();
+      this._index = (art.length, art.toList());
+    } else {
+      throw NWError();
+    }
   }
 
   void analyze() {
@@ -328,7 +365,6 @@ class NWIndexer {
   String listFmt([bool forceAnalyze = false]) => this.list(forceAnalyze).$2.map<String>((NWArticle e) => "* html: ${e.name}\t\t title: ${e.title}").join("\n");
   String listAsHtml([bool forceAnalyze = false]) => this.mgen.makeTag("ul", child: this.list(forceAnalyze).$2.map<String>((NWArticle e) => this.mgen.makeTag("li", child: this.mgen.makeTag("a", attr: <String, String>{"href": "./wiki/${e.name}"}, child: e.title))).join(this.mgen.ln));
   String listAsMd([bool forceAnalyze = false]) => this.list(forceAnalyze).$2.map<String>((NWArticle e) => "- [${e.title} - ${e.name}](./wiki/${e.name})").join("\n");
-  //(String name, String title, Uri path)
 
   /// Output
   String outAsYaml([bool forceAnalyze = false]) {
@@ -502,6 +538,15 @@ extension DirectoryCD on Directory {
         }
     }
     return t.cd(entries.skip(1));
+  }
+
+  File file(String fileName) {
+    Iterable<File> c = this.listSync().whereType<File>().where((File f) => f.name == fileName);
+    if (c.isEmpty) {
+      throw NWError();
+    } else {
+      return c.first;
+    }
   }
 }
 
