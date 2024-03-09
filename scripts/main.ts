@@ -1,7 +1,6 @@
 insertTemplate("header", "header")
 insertTemplate("stub", "stub")
 insertTemplate("footer", "footer")
-setTitle()
 document.body.style.display = 'block' //読み込みが終わったら表示
 
 window.onload = () => {
@@ -30,11 +29,4 @@ function insertTemplate (file: string, className: string) {
     }
 
     req.send()
-}
-
-function setTitle () {
-    const headTitle = document.querySelector("h1")!.innerHTML
-    const title = `${headTitle} - ンソピハワールドWiki`
-    const head = document.head;
-    head.insertAdjacentHTML("beforeend", `<title>${title}</title>`);
 }

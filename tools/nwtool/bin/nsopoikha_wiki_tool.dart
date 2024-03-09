@@ -1,8 +1,8 @@
-import 'dart:io';
+import "dart:io";
 
-import 'package:intl/intl.dart';
-import 'package:nsopoikha_wiki_tool/nsopoikha_wiki_tool.dart';
-import 'package:timezone/standalone.dart';
+import "package:intl/intl.dart";
+import "package:nsopoikha_wiki_tool/nsopoikha_wiki_tool.dart";
+import "package:timezone/standalone.dart";
 
 void main(List<String> arguments) async {
   await initializeTimeZone();
@@ -20,7 +20,7 @@ void main(List<String> arguments) async {
 
   nwi.write();
   nwi.writeJ();
-  final NWIndexDoc nwid = NWIndexDoc.fromindexer(nwi, "list.md");
+  final NWIndexDoc nwid = NWIndexDoc.fromIndexer(nwi, "list.md");
   nwid.write();
 }
 
