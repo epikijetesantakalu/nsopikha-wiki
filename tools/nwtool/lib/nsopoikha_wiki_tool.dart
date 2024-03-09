@@ -151,7 +151,6 @@ class NWArticleParser {
   Document? _d = null;
   NWArticleParser(this.io);
   Document get document {
-    print("doc");
     if (this._d == null) {
       String src = this.io.load();
       this._d = parse(src == "" ? "<html><head></head><body><h1></h1></body></html>" : src);
@@ -214,6 +213,40 @@ class MarkupGenerator {
   String attrEscape(String target) => HtmlEscape(HtmlEscapeMode.attribute).convert(target);
 }
 
+String jsonIndent(String json, {String ln = "\n", int indent = 2}) {
+  List<String> beginnings = <String>["{", "["];
+  List<String> endings = <String>["}", "]"];
+  List<String> delims = <String>[","];
+  List<String> con = <String>[":"];
+  int indentCount = 0;
+  String s1 = "";
+  String ret = "";
+  for (int i = 0; i < json.length; i++) {
+    s1 = json.substring(i, i + 1);
+    //print("loc: $i\nchar: <$s1>");
+    if (beginnings.contains(s1)) {
+      //print("- is beg [1]");
+      indentCount++;
+      ret += s1 + ln + (" " * indentCount * indent);
+    } else if (endings.contains(s1)) {
+      //print("- is end [2]");
+      indentCount--;
+      ret = ret.substring(0, ret.length - (" " * (indent - 1)).length + 1);
+      ret += ln + (" " * indentCount * indent) + s1;
+    } else if (delims.contains(s1)) {
+      //print("- is dlm [3]");
+      ret += s1 + ln + (" " * indentCount * indent);
+    } else if (con.contains(s1)) {
+      ret += "$s1 ";
+    } else {
+      //print("- is otr [4]");
+      ret += s1;
+    }
+    //print("!curr ret : $ret");
+  }
+  return ret;
+}
+
 class NWIndexer {
   final Directory base;
   final String articleDir;
@@ -271,7 +304,7 @@ class NWIndexer {
   }
 
   /// Output Data as JSON format
-  String outAsJson([bool forceAnalyze = false]) => jsonEncode(loadYaml(this.outAsYaml(forceAnalyze)));
+  String outAsJson([bool forceAnalyze = false]) => jsonIndent(jsonEncode(loadYaml(this.outAsYaml(forceAnalyze))));
 
   /// Make Data within YAML format
   YamlDocument make([bool forceAnalyze = false]) {
