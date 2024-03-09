@@ -12,11 +12,11 @@ void main(List<String> arguments) async {
 
   final NWIndexer nwi = NWIndexer(Directory.fromUri(Platform.script.cd("..".repeats(7))), loc, MarkupGenerator(), (Uri uri) => FileStringIO(uri), indexFilename: "index.yml", articleDir: "wiki", redirectFilename: "redirect.yml");
 
-  print(nwi.listFmt(true));
-  print(nwi.listAsHtml(true));
+  //print(nwi.listFmt(true));
+  //print(nwi.listAsHtml(true));
 
   print(nwi.outAsYaml(true));
-  print(nwi.outAsJson(true));
+  //print(nwi.outAsJson(true));
 
   nwi.write();
   nwi.writeJ();

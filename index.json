@@ -35,7 +35,7 @@
     "html": "nsopiba.html",
     "title": "ンソピ場",
     "lastModified": "1709952998",
-    "links": "",
+    "links": "ンソピハ -> nsopikha.html",
     "keywords": "",
     "emphasized": ""
   },
@@ -43,7 +43,7 @@
     "html": "nsopibash.html",
     "title": "ンソピ場語",
     "lastModified": "1709989921",
-    "links": "",
+    "links": "ンソピ場 -> nsopiba.html",
     "keywords": "",
     "emphasized": ""
   },
@@ -51,7 +51,7 @@
     "html": "nsopikha.html",
     "title": "ンソピハ",
     "lastModified": "1709952998",
-    "links": "",
+    "links": "ンソピ場 -> nsopiba.html, toki pona -> tokipona.html",
     "keywords": "",
     "emphasized": ""
   },
@@ -59,7 +59,7 @@
     "html": "nsopikhanikki.html",
     "title": "ンソピハ日記",
     "lastModified": "1709952998",
-    "links": "",
+    "links": "ンソピ場 -> nsopiba.html, ンソピハ -> nsopikha.html, ピハ主義 -> pihaism.html, トキポナ -> tokipona.html",
     "keywords": "",
     "emphasized": ""
   },
@@ -75,7 +75,7 @@
     "html": "piha.html",
     "title": "ぴは",
     "lastModified": "1709952998",
-    "links": "",
+    "links": "ンソピ場 -> nsopiba.html",
     "keywords": "",
     "emphasized": ""
   },
@@ -91,7 +91,7 @@
     "html": "ponaponajapan.html",
     "title": "ぽなぽなジャパン",
     "lastModified": "1709952998",
-    "links": "",
+    "links": "みゅーりん -> myu-rin.html, トキポナ -> tokipona.html, 日本語 -> ponjo.html",
     "keywords": "",
     "emphasized": ""
   },
@@ -99,7 +99,7 @@
     "html": "ponjo.html",
     "title": "ポニョ語",
     "lastModified": "1709952998",
-    "links": "",
+    "links": "ンソピハ -> nsopikha.html",
     "keywords": "",
     "emphasized": ""
   },
@@ -123,7 +123,7 @@
     "html": "rotokas.html",
     "title": "ロトカス語",
     "lastModified": "1709952998",
-    "links": "",
+    "links": "ンソピハ -> nsopikha.html",
     "keywords": "",
     "emphasized": ""
   },
@@ -139,7 +139,7 @@
     "html": "semelisemeanuseme.html",
     "title": "seme li seme ala seme anu seme?",
     "lastModified": "1709952998",
-    "links": "",
+    "links": "seme? -> semelisemeanuseme.html",
     "keywords": "",
     "emphasized": ""
   },
@@ -147,7 +147,7 @@
     "html": "tokipona.html",
     "title": "トキポナ",
     "lastModified": "1709952998",
-    "links": "",
+    "links": "ンソピハ -> nsopikha.html, ぽなぽなジャパン -> ponaponajapan.html",
     "keywords": "",
     "emphasized": ""
   },
@@ -155,7 +155,7 @@
     "html": "tuo.html",
     "title": "倫",
     "lastModified": "1709952998",
-    "links": "",
+    "links": "ンソピ場 -> nsopiba.html",
     "keywords": "",
     "emphasized": ""
   },

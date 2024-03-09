@@ -60,13 +60,13 @@ class NWArticle implements Comparable<NWArticle> {
   factory NWArticle._fromSortee(_NWArticleSortee _s) => _s as NWArticle;
   factory NWArticle.parseFile(Uri path, StrIOIF io) {
     NWArticleParser p = NWArticleParser(io);
-    return NWArticle(p.title, path, p.links.toList(), p.keywords.toList(), p.emphasized.toList());
+    return NWArticle(p.title, path, p.onlyInternal(p.links).toList(), p.keywords.toList(), p.withOutTitle(p.emphasized, p.title).toList());
   }
   String get name => this.path.pathSegments.last;
   DateTime get lastModified => File.fromUri(this.path).lastModifiedSync();
 
   Map<String, Object> asMap() => <String, Object>{"html": this.name, "title": this.title, "lastModified": this.lastModified, "path": this.path, "links": this.links, "keywords": this.keywords, "emphasized": this.emphasized};
-  Map<String, String> asStringMap() => <String, String>{"html": this.name, "title": this.title, "lastModified": (this.lastModified.millisecondsSinceEpoch ~/ 1000).toString(), "links": this.links.map<String>(((String, Uri) e) => "").join(", "), "keywords": this.keywords.join(", "), "emphasized": this.emphasized.join(", ")};
+  Map<String, String> asStringMap() => this.asMap().map<String, String>((String key, Object value) => MapEntry<String, String>(key, MapSerializeConverter()(value)))..remove("path");
 
   @override
   int compareTo(NWArticle other, {SortMethod method = SortMethod.byName, SortOrder order = SortOrder.ascend}) {
@@ -146,6 +146,26 @@ class NWArticleSource extends NWArticle {
   }
 }
 
+class MapSerializeConverter {
+  String call(Object target) {
+    if (target is String) {
+      return target;
+    } else if (target is DateTime) {
+      return (target.millisecondsSinceEpoch ~/ 1000).toString();
+    } else if (target is List<Object>) {
+      return target.map<String>((Object e) => this(e)).join(", ");
+    } else if (target is Uri) {
+      return target.path;
+    } else if (target is (Object, Object)) {
+      return "${this(target.$1)} -> ${this(target.$2)}";
+    } else if (target is Map<Object, Object>) {
+      return this(target.entries.map<String>((MapEntry<Object, Object> e) => "[${this(e.key)}]${this(e.value)}").toList());
+    } else {
+      throw NWError();
+    }
+  }
+}
+
 class NWArticleParser {
   final StrIOIF io;
   Document? _d = null;
@@ -172,16 +192,24 @@ class NWArticleParser {
     }
   }
 
+  Iterable<String> withOutTitle(Iterable<String> e, String title) => e.where((String el) => el != title);
+  Iterable<(String, Uri)> onlyInternal(Iterable<(String, Uri)> e) => e.where(((String, Uri) el) => !el.$2.hasScheme);
   Iterable<String> get keywords => this.elementsOnBodyQuery(tagName: "span", className: "keywords", leafOnly: true).map<List<String>>((Element e) => e.text.split(RegExp(", ?"))).expand((List<String> e) => e).toSet().toList();
-  Iterable<String> get emphasized => this.elementsOnBodyQuery(tagName: "strong", leafOnly: true).followedBy(this.elementsOnBodyQuery(tagName: "em", leafOnly: true)).followedBy(this.elementsOnBodyQuery(tagName: "i", leafOnly: true)).followedBy(this.elementsOnBodyQuery(tagName: "b", leafOnly: true)).map<String>((Element e) => e.text).toSet().toList();
-  Iterable<(String, Uri)> get links => NWArticleParser.toLeafWhere(this.elementsOnBodyQuery(tagName: "a", leafOnly: true)).map((Element e) => (e.text, Uri.file(e.attributes["href"]!)));
+
+  Iterable<String> get emphasized => (this.elementsOnBodyQuery(tagName: "strong", leafOnly: true).followedBy(this.elementsOnBodyQuery(tagName: "em", leafOnly: true)).followedBy(this.elementsOnBodyQuery(tagName: "i", leafOnly: true)).followedBy(this.elementsOnBodyQuery(tagName: "b", leafOnly: true))).map<String>((Element e) => e.text).toSet().toList();
+
+  Iterable<(String, Uri)> get links => NWArticleParser.toLeafWhere(this.elementsOnBodyQuery(tagName: "a", leafOnly: true), true).map<(String, Uri)>((Element e) => (e.text, Uri.parse(e.attributes["href"]!)));
+
   Element get head => this.document.head ?? Element.tag("head");
   Iterable<Element> get elementsOnBody => this.document.body!.children;
-  Iterable<Element> elementsOnBodyInTag(String tagName, {bool leafOnly = false}) => NWArticleParser.toLeafWhere(this.elementsOnBody.where((Element e) => e.localName?.toLowerCase() == tagName.toLowerCase()).toList());
-  Iterable<Element> elementsOnBodyQuery({String? tagName, String? className, String? idName, bool leafOnly = false}) => (tagName == null ? NWArticleParser.toLeafWhere(this.elementsOnBody, leafOnly) : this.elementsOnBodyInTag(tagName, leafOnly: leafOnly)).where((Element e) {
-        return false;
-      });
-  static Iterable<Element> toLeafWhere(Iterable<Element> e, [bool leafOnly = false]) => leafOnly ? e.where((Element e) => false) : e;
+  Iterable<Element> elementsOnBodyInTag(String tagName, {bool leafOnly = false}) => NWArticleParser.toLeafWhere(this.elementsOnBody.where((Element e) => e.localName?.toLowerCase() == tagName.toLowerCase()), leafOnly);
+  Iterable<Element> elementsOnBodyQuery({String? tagName, String? className, String? idName, bool leafOnly = false}) => (tagName == null ? (NWArticleParser.toLeafWhere(this.elementsOnBody, leafOnly)) : (this.elementsOnBodyInTag(tagName, leafOnly: leafOnly))).where((Element e) => (className == null ? true : e.className == className) && (idName == null ? true : e.id == idName));
+
+  static Iterable<Element> toLeafWhere(Iterable<Element> e, [bool leafOnly = false]) => (leafOnly ? e.where((Element el) => !(el.hasChildren())) : e);
+}
+
+extension HasChildren on Element {
+  bool hasChildren() => this.children.isNotEmpty;
 }
 
 class MarkupGenerator {
@@ -214,30 +242,35 @@ class MarkupGenerator {
 }
 
 String jsonIndent(String json, {String ln = "\n", int indent = 2}) {
-  List<String> beginnings = <String>["{", "["];
-  List<String> endings = <String>["}", "]"];
-  List<String> delims = <String>[","];
-  List<String> con = <String>[":"];
+  final List<String> beginnings = <String>["{", "["];
+  final List<String> endings = <String>["}", "]"];
+  final String delim = ",";
+  final String con = ":";
+  final String quote = "\"";
   int indentCount = 0;
+  bool isInQuote = false;
   String s1 = "";
   String ret = "";
   for (int i = 0; i < json.length; i++) {
     s1 = json.substring(i, i + 1);
     //print("loc: $i\nchar: <$s1>");
-    if (beginnings.contains(s1)) {
+    if (beginnings.contains(s1) && !isInQuote) {
       //print("- is beg [1]");
       indentCount++;
       ret += s1 + ln + (" " * indentCount * indent);
-    } else if (endings.contains(s1)) {
+    } else if (endings.contains(s1) && !isInQuote) {
       //print("- is end [2]");
       indentCount--;
-      ret = ret.substring(0, ret.length - (" " * (indent - 1)).length + 1);
+      ret = ret.substring(0, ret.length - (" " * (indent - 1)).length + ln.length);
       ret += ln + (" " * indentCount * indent) + s1;
-    } else if (delims.contains(s1)) {
+    } else if (delim == s1 && !isInQuote) {
       //print("- is dlm [3]");
       ret += s1 + ln + (" " * indentCount * indent);
-    } else if (con.contains(s1)) {
+    } else if (con == s1 && !isInQuote) {
       ret += "$s1 ";
+    } else if (quote == s1) {
+      isInQuote = !isInQuote;
+      ret += s1;
     } else {
       //print("- is otr [4]");
       ret += s1;
