@@ -4,6 +4,7 @@ import "dart:io";
 import "package:html/parser.dart";
 import "package:html/dom.dart";
 import "package:intl/intl.dart";
+import "package:markdown/markdown.dart" as m;
 import "package:yaml/yaml.dart";
 import "package:yaml_writer/yaml_writer.dart";
 import "package:timezone/standalone.dart";
@@ -15,6 +16,9 @@ class NWOGPBuilder {
   String build(String title, int indentCount) {
     final List<String> headers = <String>[];
     headers.add(this.mgen.makeTag("title", child: title));
+    headers.add(this.linkBuild("icon", "../images/nsopikhaflag.png"));
+    headers.add(this.linkBuild("stylesheet", "../styles/style.css"));
+    headers.add(this.metaBuild2("google-site-verification", "_23Jwo9FgIzU77WEonAne8hOI71OnzZ8LZTFZV1no9w"));
     headers.add(this.metaBuildOGP("description", "Ketaが管理人の非公式Wikiです。"));
     headers.add(this.metaBuildOGP("title", title));
     headers.add(this.metaBuildOGP("site_name", "ンソピハワールドWiki"));
@@ -23,16 +27,26 @@ class NWOGPBuilder {
     headers.add(this.metaBuildOGP("image:height", "630"));
     headers.add(this.metaBuildOGP("type", "website"));
     headers.add(this.metaBuildOGP("url", "https://epikijetesantakalu.github.io/nsopikha-wiki"));
-    headers.add(this.metaBuildOGP("theme-color", "#fafb7c"));
+    headers.add(this.metaBuild2("theme-color", "#fafb7c"));
     return this.mgen.indentM(headers.join(this.mgen.ln), indentCount);
   }
 
   String metaBuildOGP(String prop, String content) => this.metaBuild("og", prop, content);
   String metaBuild(String propNS, String prop, String content) => this.mgen.makeTag("meta", attr: <String, String>{"property": "$propNS:$prop", "content": content});
+  String metaBuild2(String name, String content) => this.mgen.makeTag("meta", attr: <String, String>{"name": name, "content": content});
+  String linkBuild(String rel, String href) => this.mgen.makeTag("link", attr: <String, String>{"rel": rel, "content": href});
 }
 
 void build(NWIndexer ix) {
   final String ixl = ix.build();
+  final NWArticleParser Function(Uri) p = ((Uri u) => NWArticleParser(ix.ioToFileOf(u)));
+  ix.list().$2.forEach((NWArticle el) {
+    final File f = File.fromUri(el.path);
+    final String ogp = NWOGPBuilder(ix.mgen).build(el.title, 2);
+    final List<String> src = (p(el.path).head.text).split(ix.mgen.ln);
+    final String hc = src.take(3).join(ix.mgen.ln) + ix.mgen.ln + ogp;
+    p(el.path).head.text = hc;
+  });
 }
 
 /// article information
@@ -45,11 +59,14 @@ class NWArticle implements Comparable<NWArticle> {
   NWArticle(this.title, this.path, this.links, this.keywords, this.emphasized);
   factory NWArticle._fromSortee(_NWArticleSortee _s) => _s as NWArticle;
   factory NWArticle.parseFile(Uri path, StrIOIF io) {
-    NWArticleParser p = NWArticleParser(io, path);
+    NWArticleParser p = NWArticleParser(io);
     return NWArticle(p.title, path, p.links.toList(), p.keywords.toList(), p.emphasized.toList());
   }
   String get name => this.path.pathSegments.last;
-  DateTime get lastModified => File(this.path.path).lastModifiedSync();
+  DateTime get lastModified => File.fromUri(this.path).lastModifiedSync();
+
+  Map<String, Object> asMap() => <String, Object>{"html": this.name, "title": this.title, "lastModified": this.lastModified, "path": this.path, "links": this.links, "keywords": this.keywords, "emphasized": this.emphasized};
+  Map<String, String> asStringMap() => <String, String>{"html": this.name, "title": this.title, "lastModified": (this.lastModified.millisecondsSinceEpoch ~/ 1000).toString(), "links": this.links.map<String>(((String, Uri) e) => "").join(", "), "keywords": this.keywords.join(", "), "emphasized": this.emphasized.join(", ")};
 
   @override
   int compareTo(NWArticle other, {SortMethod method = SortMethod.byName, SortOrder order = SortOrder.ascend}) {
@@ -100,17 +117,66 @@ enum SortMethod { byName, byPath, byDate }
 
 enum SortOrder { ascend, descend }
 
+class NWArticleSource extends NWArticle {
+  final String source;
+  final MarkupGenerator g;
+  NWArticleSource._(super.title, super.path, super.links, super.keywords, super.emphasized, this.source, [MarkupGenerator? g]) : this.g = g ?? MarkupGenerator();
+  factory NWArticleSource(String title, Uri path, List<String> keywords, String source, [MarkupGenerator? g]) {
+    final VirtualStringIO vio = VirtualStringIO();
+    vio.write(source);
+    final NWArticleParser p = NWArticleParser(vio);
+    return NWArticleSource._(title, path, p.links.toList(), keywords, p.emphasized.toList(), source, g);
+  }
+  factory NWArticleSource.fromText(String title, Uri path, List<String> keywords, String text, [MarkupGenerator? g]) {
+    MarkupGenerator _g = g ?? MarkupGenerator();
+    return NWArticleSource(title, path, keywords, _g.makeTag("div", child: text.split(_g.ln).join(_g.ln + _g.makeTag("br") + _g.ln)), _g);
+  }
+  factory NWArticleSource.fromMd(String title, Uri path, List<String> keywords, String md, [MarkupGenerator? g]) => NWArticleSource(title, path, keywords, m.markdownToHtml(md), g);
+  String asHtml() {
+    NWOGPBuilder b = NWOGPBuilder(this.g);
+    final String magic = "<!DOCTYPE html>";
+    final String head = this.g.makeTag("head", child: b.build(this.title, 0));
+    final String header = this.g.makeTag("header", className: "header", child: "");
+    final String t = this.g.makeTag("h1", child: this.title);
+    final String footer = this.g.makeTag("footer", className: "footer", child: "");
+    final String body = this.g.makeTag("body", child: <String>[header, t, this.source, footer].join(this.g.ln));
+    final String script = this.g.makeTag("script", attr: <String, String>{"src": "../scripts/main.js"}, child: "");
+    final String html = this.g.makeTag("html", child: <String>[head, body, script].join(this.g.ln));
+    return magic + this.g.ln + html;
+  }
+}
+
 class NWArticleParser {
   final StrIOIF io;
-  final Uri uri;
-  NWArticleParser(this.io, this.uri);
-  Document get document => parse(File.fromUri(this.uri).readAsStringSync());
+  Document? _d = null;
+  NWArticleParser(this.io);
+  Document get document {
+    print("doc");
+    if (this._d == null) {
+      String src = this.io.load();
+      this._d = parse(src == "" ? "<html><head></head><body><h1></h1></body></html>" : src);
+      return this._d!;
+    } else {
+      return this._d!;
+    }
+  }
+
+  void write() => this.io.write(this.document.outerHtml);
 
   /// get title of article html (first h1)
-  String get title => this.elementsOnBodyInTag("h1").first.text;
+  String get title {
+    Iterable<Element> e = this.elementsOnBodyInTag("h1");
+    if (e.isEmpty) {
+      return "";
+    } else {
+      return e.first.text;
+    }
+  }
+
   Iterable<String> get keywords => this.elementsOnBodyQuery(tagName: "span", className: "keywords", leafOnly: true).map<List<String>>((Element e) => e.text.split(RegExp(", ?"))).expand((List<String> e) => e).toSet().toList();
   Iterable<String> get emphasized => this.elementsOnBodyQuery(tagName: "strong", leafOnly: true).followedBy(this.elementsOnBodyQuery(tagName: "em", leafOnly: true)).followedBy(this.elementsOnBodyQuery(tagName: "i", leafOnly: true)).followedBy(this.elementsOnBodyQuery(tagName: "b", leafOnly: true)).map<String>((Element e) => e.text).toSet().toList();
   Iterable<(String, Uri)> get links => NWArticleParser.toLeafWhere(this.elementsOnBodyQuery(tagName: "a", leafOnly: true)).map((Element e) => (e.text, Uri.file(e.attributes["href"]!)));
+  Element get head => this.document.head ?? Element.tag("head");
   Iterable<Element> get elementsOnBody => this.document.body!.children;
   Iterable<Element> elementsOnBodyInTag(String tagName, {bool leafOnly = false}) => NWArticleParser.toLeafWhere(this.elementsOnBody.where((Element e) => e.localName?.toLowerCase() == tagName.toLowerCase()).toList());
   Iterable<Element> elementsOnBodyQuery({String? tagName, String? className, String? idName, bool leafOnly = false}) => (tagName == null ? NWArticleParser.toLeafWhere(this.elementsOnBody, leafOnly) : this.elementsOnBodyInTag(tagName, leafOnly: leafOnly)).where((Element e) {
@@ -126,10 +192,10 @@ class MarkupGenerator {
   String makeTag(String tagName, {String? className, String? id, String? child, Map<String, String>? attr}) {
     final List<String> base = <String>[tagName];
     if (className != null) {
-      base.add(this.attrEscape(className));
+      base.add("class=\"${this.attrEscape(className)}\"");
     }
     if (id != null) {
-      base.add(this.attrEscape(id));
+      base.add("id=\"${this.attrEscape(id)}\"");
     }
     if (attr != null) {
       base.addAll(attr.entries.map<String>((MapEntry<String, String> e) => "${e.key}=\"${this.attrEscape(e.value)}\""));
@@ -152,16 +218,25 @@ class NWIndexer {
   final Directory base;
   final String articleDir;
   final String indexFilename;
+  final String redirectFilename;
   final Location timezone;
-  final StrIOIF io;
+  StrIOIF Function(Uri) ioToFileOf;
+  final StrIOIF ioIndex;
+  final StrIOIF ioRedirect;
+  final StrIOIF Function(String) ioArticle;
   final MarkupGenerator mgen;
   String _yst = "";
-  (int count, List<(String name, String title, Uri path)> element)? _index;
-  NWIndexer(Directory base, String indexFilename, this.articleDir, this.timezone, this.mgen, StrIOIF Function(Uri) ioToFileOf)
-      : this.io = ioToFileOf(Uri.file(base.path).cd([indexFilename])),
+  (int count, List<NWArticle> element)? _index;
+  NWIndexer(Directory base, this.timezone, this.mgen, StrIOIF Function(Uri) ioToFileOf, {required String indexFilename, required String articleDir, required String redirectFilename})
+      : this.ioToFileOf = ioToFileOf,
+        this.ioIndex = ioToFileOf(Uri.file(base.path).cd([indexFilename])),
+        this.ioArticle = ((String fileName) => ioToFileOf(Uri.file(base.path).cd([articleDir, fileName]))),
+        this.ioRedirect = ioToFileOf(Uri.file(base.path).cd([redirectFilename])),
         this.base = base,
-        this.indexFilename = indexFilename;
-  (int count, List<(String name, String title, Uri path)> element) list([bool forceAnalyze = false]) {
+        this.indexFilename = indexFilename,
+        this.articleDir = articleDir,
+        this.redirectFilename = redirectFilename;
+  (int count, List<NWArticle>) list([bool forceAnalyze = false]) {
     if (!forceAnalyze) {
       try {
         this.load(this.indexFilename);
@@ -175,22 +250,19 @@ class NWIndexer {
   }
 
   void load(String filename) {
-    File f = File.fromUri(Uri.file(this.base.path).cd([filename]));
-    if (!f.existsSync()) {
-      throw NWError();
-    }
-    final YamlDocument doc = loadYamlDocument(f.readAsStringSync());
+    final YamlDocument doc = loadYamlDocument(this.ioIndex.load());
     doc.contents;
   }
 
   void analyze() {
     List<FileSystemEntity> dl = Directory.fromUri(this.base.uri.cd([this.articleDir])).listSync(followLinks: true).where((FileSystemEntity e) => FileSystemEntity.isFileSync(e.path)).where((FileSystemEntity e) => (e.path.endsWith(".html") || e.path.endsWith(".htm")) && !(e.uri.pathSegments.last == "index.html" || e.uri.pathSegments.last == "index.htm")).toList();
-    this._index = (dl.length, dl.map<(String name, String title, Uri path)>((FileSystemEntity e) => (e.uri.pathSegments.last, NWArticleParser(this.io, e.uri).title, e.uri)).toList());
+    this._index = (dl.length, dl.map<NWArticle>((FileSystemEntity e) => NWArticle.parseFile(e.uri, this.ioToFileOf(e.uri))).toList());
   }
 
-  String listFmt([bool forceAnalyze = false]) => this.list(forceAnalyze).$2.map<String>(((String name, String title, Uri path) e) => "* html: ${e.$1}\t\t title: ${e.$2}").join("\n");
-  String listAsHtml([bool forceAnalyze = false]) => this.mgen.makeTag("ul", child: this.list(forceAnalyze).$2.map<String>(((String name, String title, Uri path) e) => this.mgen.makeTag("li", child: this.mgen.makeTag("a", attr: <String, String>{"href": "./wiki/${e.$1}"}, child: e.$2))).join(this.mgen.ln));
-  String listAsMd([bool forceAnalyze = false]) => this.list(forceAnalyze).$2.map<String>(((String name, String title, Uri path) e) => "- [${e.$2} - ${e.$1}](./wiki/${e.$1})").join("\n");
+  String listFmt([bool forceAnalyze = false]) => this.list(forceAnalyze).$2.map<String>((NWArticle e) => "* html: ${e.name}\t\t title: ${e.title}").join("\n");
+  String listAsHtml([bool forceAnalyze = false]) => this.mgen.makeTag("ul", child: this.list(forceAnalyze).$2.map<String>((NWArticle e) => this.mgen.makeTag("li", child: this.mgen.makeTag("a", attr: <String, String>{"href": "./wiki/${e.name}"}, child: e.title))).join(this.mgen.ln));
+  String listAsMd([bool forceAnalyze = false]) => this.list(forceAnalyze).$2.map<String>((NWArticle e) => "- [${e.title} - ${e.name}](./wiki/${e.name})").join("\n");
+  //(String name, String title, Uri path)
 
   /// Output
   String outAsYaml([bool forceAnalyze = false]) {
@@ -204,7 +276,7 @@ class NWIndexer {
   /// Make Data within YAML format
   YamlDocument make([bool forceAnalyze = false]) {
     YamlWriter ed = YamlWriter();
-    this._yst = ed.write(this.list(forceAnalyze).$2.map<Map<String, String>>(((String name, String title, Uri path) e) => Map<String, String>.fromEntries(<MapEntry<String, String>>[MapEntry<String, String>("html", e.$1), MapEntry<String, String>("title", e.$2)])).toList());
+    this._yst = ed.write(this.list(forceAnalyze).$2.map<Map<String, String>>((NWArticle e) => e.asStringMap()).toList());
     return loadYamlDocument(this._yst);
   }
 
@@ -291,6 +363,17 @@ class FileStringIO extends StrIOIF {
     this.createIfNotExists;
     this.file.writeAsStringSync(data);
   }
+}
+
+class VirtualStringIO extends StrIOIF {
+  String _internal = "";
+  VirtualStringIO();
+
+  @override
+  String load() => this._internal;
+
+  @override
+  void write(String data) => this._internal = data;
 }
 
 ///command cd for Uri class
