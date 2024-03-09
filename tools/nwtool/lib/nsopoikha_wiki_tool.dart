@@ -1,5 +1,6 @@
 import "dart:convert";
 import "dart:io";
+import "dart:math";
 
 import "package:html/parser.dart";
 import "package:html/dom.dart";
@@ -68,6 +69,8 @@ class NWArticle implements Comparable<NWArticle> {
   Map<String, Object> asMap() => <String, Object>{"html": this.name, "title": this.title, "lastModified": this.lastModified, "path": this.path, "links": this.links, "keywords": this.keywords, "emphasized": this.emphasized};
   Map<String, String> asStringMap() => this.asMap().map<String, String>((String key, Object value) => MapEntry<String, String>(key, MapSerializeConverter()(value)))..remove("path");
 
+  NWArticle replaced({String? title, Uri? path, List<(String, Uri)>? links, List<String>? keywords, List<String>? emphasized}) => NWArticle(title ?? this.title, path ?? this.path, links ?? this.links, keywords ?? this.keywords, emphasized ?? this.emphasized);
+
   @override
   int compareTo(NWArticle other, {SortMethod method = SortMethod.byName, SortOrder order = SortOrder.ascend}) {
     final int sign = switch (order) { SortOrder.ascend => 1, SortOrder.descend => -1 };
@@ -77,6 +80,28 @@ class NWArticle implements Comparable<NWArticle> {
 
   @override
   String toString() => this.asStringMap().entries.map<String>((MapEntry<String, String> e) => "${e.key}: ${e.value}").join("\n");
+}
+
+extension RedirectApply on List<NWArticle> {
+  List<NWArticle> withRedirect(Map<String, String> redirects) {
+    redirects.flatten().forEach((String k, String v) {
+      Iterable<NWArticle> temp = this.where((NWArticle a) => a.title == v);
+      if (temp.isNotEmpty) {
+        this.add(temp.first.replaced(title: k));
+      }
+    });
+    return this;
+  }
+}
+
+extension RedirectFlatten on Map<String, String> {
+  Map<String, String> flatten() {
+    if (this.values.every((String v) => !this.containsKey(v))) {
+      return this;
+    }
+    this.updateAll((String _, String v) => this.containsKey(v) ? this[v]! : v);
+    return this.flatten();
+  }
 }
 
 class _NWArticleSortee extends NWArticle {
@@ -236,12 +261,33 @@ class MarkupGenerator {
 
   String wrapATBracket(String init, {bool closing = false, bool single = false}) => "<${closing ? "/" : ""}$init${single ? " /" : ""}>";
   String indent(String lines, {bool wrapLn = false}) => (wrapLn ? this.ln : "") + lines.split(this.ln).map<String>((String l) => " " * this.indentCount + l).join(this.ln) + (wrapLn ? this.ln : "");
-  String indentM(String lines, int indentCount, {bool wrapLn = false}) {
+  String indentM(String lines, int indentCountX, {bool wrapLn = false}) {
     if (indentCount <= 0) return lines;
-    return indentM(this.indent(lines), indentCount - 1);
+    return indentM(this.indent(lines), indentCountX - 1);
   }
 
   String attrEscape(String target) => HtmlEscape(HtmlEscapeMode.attribute).convert(target);
+  String lineForEachAll(String target, Iterable<String> Function(Iterable<String>) fnForLines) => fnForLines(target.split(this.ln)).join(this.ln);
+  String lineForEach(String target, String Function(String) fnForEachLine) => lineForEachAll(target, (Iterable<String> it) => it.map(fnForEachLine));
+  int indentLevCount(String target) => this._indentLevCount(target, 0);
+  int _indentLevCount(String target, int ret) {
+    final int loc = ret * this.indentCount;
+    if (target.substring(loc, loc + this.indentCount) == " " * this.indentCount) {
+      return _indentLevCount(target, ret + 1);
+    } else {
+      return ret;
+    }
+  }
+
+  String unindent(String target, int count) {
+    Iterable<String> s = target.split(this.ln);
+    int c = min<int>(count, s.map<int>((String e) => this.indentLevCount(e)).reduce((int prev, int curr) => min<int>(prev, curr)));
+    return s.map((String e) => e.substring(c * this.indentCount)).join(this.ln);
+  }
+
+  String subline(String target, int start, [int? end]) => target.split(this.ln).sublist(start, end).join(this.ln);
+  int lineLen(String target) => target.split(this.ln).length;
+  String unwrap(String target, int line, [int? addIndent]) => this.indentM(this.unindent(this.subline(target, line, this.lineLen(target) - line), line), addIndent ?? 0);
 }
 
 String jsonIndent(String json, {String ln = "\n", int indent = 2}) {
@@ -571,3 +617,10 @@ extension StringRepeat on String {
 
 ///unique error for nwtool
 class NWError extends Error {}
+
+//Rice(`.rice`): Representation with Indexing and Compressing of Entries on Encyclopedia
+class RiceBuilder {
+  RiceBuilder();
+  factory RiceBuilder.fromArticle(NWArticle art, String source) => RiceBuilder();
+  List<int> build() => <int>[];
+}
