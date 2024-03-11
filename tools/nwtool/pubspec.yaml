@@ -20,4 +20,4 @@ dev_dependencies:
   test: ^1.16.0
 
 executables:
-  nwtool: nwtool_core.dart
+  nwtool: nwtool_core

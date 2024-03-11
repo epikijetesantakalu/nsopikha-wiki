@@ -1,3 +1,5 @@
+// ignore_for_file: unused_import
+
 import "package:nsopoikha_wiki_tool/src/lib/genlib.dart";
 export "package:nsopoikha_wiki_tool/src/lib/genlib.dart";
 import "package:nsopoikha_wiki_tool/src/lib/datelib.dart";
