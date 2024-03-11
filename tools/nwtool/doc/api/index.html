@@ -52,16 +52,48 @@
   <div id="dartdoc-main-content" class="main-content">
       
 <section class="desc markdown">
-  <p>A sample command-line application with an entrypoint in <code>bin/</code>, library code
-in <code>lib/</code>, and example unit test in <code>test/</code>.</p>
+  <h1 id="nwtool---a-tool-for-nsopikha-wiki">nwtool - a tool for Nsopikha Wiki</h1>
+<h2 id="how-to-use">How to use</h2>
+<h3 id="">セットアップ(はじめのみ行う)</h3>
+<ol>
+<li>Dart SDK(なるべく最新、少なくともv3.x.x)をインストールする(ex. ダウンロード &amp; 環境変数)</li>
+</ol>
+<h3 id="-2">セットアップ(プログラムがアップデートされるたびに行う)</h3>
+<ol>
+<li>このReadMeのあるディレクトリ(<code>/tools/nwtool</code>)に<code>cd</code>する</li>
+<li><code>dart pub global activate -spath .</code></li>
+</ol>
+<h3 id="-3">実行</h3>
+<ol>
+<li><code>nwtool</code> 或いはそのほか設定されたコマンドをたたく</li>
+</ol>
+<h2 id="commands----all-in-dev-except-nwtoolno-arg">Commands -- All in DEV except <code>nwtool</code>(no-arg)</h2>
+<p><code>netool</code><br>
+何もサブコマンドも引数も与えない場合、従前のツールのコードが実行される。<code>nwtool analyze</code>として予定される挙動をしめすが、当該機能とは一致しないβ版である。表示はlist, html, yaml, json。</p>
+<p><code>nwtool analyze</code><br>
+記事ファイルを解析しインデックスデータを生成・表示及びインデックスファイル(yaml, json, md)への書き込みを行う。</p>
+<p><code>nwtool load</code><br>
+インデックスファイルの内容を読み込み表示する。</p>
+<p><code>nwtool show</code><br>
+コマンド<code>nwtool analyze</code>とほぼ同等の挙動をするが、インデックスファイルへの書き込みは行われない。</p>
+<p><code>nwtool build</code><br>
+インデックスファイルの内容からindex.html及び付属するスタイル・スクリプトをビルドする。</p>
+<p><code>nwtool template &lt;name&gt; &lt;path&gt; &lt;source&gt; &lt;config&gt;</code><br>
+記事テンプレートを生成する。</p>
+<ul>
+<li><code>name</code> 記事タイトル。</li>
+<li><code>path</code>　記事ファイルの配置パス。wikiディレクトリをルートとする。</li>
+<li><code>source</code>　記事本文の初期ソースファイル。マークダウン又はプレーンテキスト。</li>
+<li><code>config</code>　設定ファイル。yaml形式で、次の項目による。コマンド引数におけるname, path, sourceの要素と同等の項目を設定ファイルに記述する場合、該当のコマンド引数は省略可能。その場合コマンド引数と設定ファイルの内容が異なるときは、該当するコマンド引数は無視され設定ファイルの指定が優先される。</li>
+</ul>
 </section>
 
 
       <section class="summary">
           <h2>Libraries</h2>
         <dl>
-          <dt id="nsopoikha_wiki_tool">
-  <span class="name"><a href="nsopoikha_wiki_tool/nsopoikha_wiki_tool-library.html">nsopoikha_wiki_tool</a></span> 
+          <dt id="nwtool">
+  <span class="name"><a href="nwtool/nwtool-library.html">nwtool</a></span> 
 
 </dt>
 <dd>
@@ -88,7 +120,7 @@ in <code>lib/</code>, and example unit test in <code>test/</code>.</p>
     <h5 class="hidden-xs"><span class="package-name">nsopoikha_wiki_tool</span> <span class="package-kind">package</span></h5>
     <ol>
       <li class="section-title">Libraries</li>
-      <li><a href="nsopoikha_wiki_tool/nsopoikha_wiki_tool-library.html">nsopoikha_wiki_tool</a></li>
+      <li><a href="nwtool/nwtool-library.html">nwtool</a></li>
 </ol>
 
   </div>
