@@ -1,7 +1,7 @@
 import "dart:io";
 
 import "package:intl/intl.dart";
-import "package:nsopoikha_wiki_tool/nsopoikha_wiki_tool.dart";
+import "package:nsopoikha_wiki_tool/core.dart";
 import "package:timezone/standalone.dart";
 
 void main(List<String> arguments) async {
