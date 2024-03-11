@@ -4,6 +4,7 @@ import "package:intl/intl.dart";
 import "package:nsopoikha_wiki_tool/core.dart";
 import "package:nsopoikha_wiki_tool/datelib.dart";
 import "package:nsopoikha_wiki_tool/fslib.dart";
+import "package:nsopoikha_wiki_tool/genlib.dart";
 import "package:nsopoikha_wiki_tool/interface.dart";
 import "package:nsopoikha_wiki_tool/markuplib.dart";
 import "package:timezone/standalone.dart";

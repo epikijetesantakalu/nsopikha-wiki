@@ -2,6 +2,7 @@ import "dart:io";
 
 import "package:nsopoikha_wiki_tool/error.dart";
 
+///command cd for Uri class
 extension UriCD on Uri {
   ///command cd for Uri class
   Uri cd(Iterable<String> entries) {
