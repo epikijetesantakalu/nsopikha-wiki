@@ -3,10 +3,10 @@ import "dart:io";
 import "package:html/dom.dart";
 import "package:html/parser.dart";
 import "package:markdown/markdown.dart" as m;
-import "package:nsopoikha_wiki_tool/error.dart";
-import "package:nsopoikha_wiki_tool/head.dart";
-import "package:nsopoikha_wiki_tool/interface.dart";
-import "package:nsopoikha_wiki_tool/markuplib.dart";
+import "package:nsopoikha_wiki_tool/src/lib/error.dart";
+import "package:nsopoikha_wiki_tool/src/core/head.dart";
+import "package:nsopoikha_wiki_tool/src/core/interface.dart";
+import "package:nsopoikha_wiki_tool/src/lib/markuplib.dart";
 
 /// article information
 class NWArticle implements Comparable<NWArticle> {

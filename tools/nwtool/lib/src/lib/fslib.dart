@@ -1,6 +1,6 @@
 import "dart:io";
 
-import "package:nsopoikha_wiki_tool/error.dart";
+import "package:nsopoikha_wiki_tool/src/lib/error.dart";
 
 ///command cd for Uri class
 extension UriCD on Uri {

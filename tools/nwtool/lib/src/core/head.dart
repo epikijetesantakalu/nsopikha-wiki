@@ -1,4 +1,4 @@
-import "package:nsopoikha_wiki_tool/markuplib.dart";
+import "package:nsopoikha_wiki_tool/nwtool.dart";
 
 class NWOGPBuilder {
   MarkupGenerator mgen;

@@ -2,13 +2,7 @@ import "dart:convert";
 import "dart:io";
 
 import "package:intl/intl.dart";
-import "package:nsopoikha_wiki_tool/article.dart";
-import "package:nsopoikha_wiki_tool/error.dart";
-import "package:nsopoikha_wiki_tool/fslib.dart";
-import "package:nsopoikha_wiki_tool/genlib.dart";
-import "package:nsopoikha_wiki_tool/head.dart";
-import "package:nsopoikha_wiki_tool/interface.dart";
-import "package:nsopoikha_wiki_tool/markuplib.dart";
+import "package:nsopoikha_wiki_tool/nwtool.dart";
 import "package:yaml/yaml.dart";
 import "package:yaml_writer/yaml_writer.dart";
 import "package:timezone/standalone.dart";

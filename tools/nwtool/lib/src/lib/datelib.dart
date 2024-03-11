@@ -1,7 +1,6 @@
 import "dart:io";
 
-import "package:nsopoikha_wiki_tool/error.dart";
-import "package:nsopoikha_wiki_tool/fslib.dart";
+import "package:nsopoikha_wiki_tool/nwtool.dart";
 
 DateTime lastModified(Directory d, [Iterable<String>? excludes]) => _lastModified(d, 0, excludes);
 DateTime _lastModified(Directory d, int count, [Iterable<String>? excludes]) {
