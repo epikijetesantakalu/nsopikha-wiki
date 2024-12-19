@@ -1,126 +1,144 @@
-- html: "epikijetesantakaluKeta.html"
-  title: "epikijetesantakalu Keta"
-  lastModified: "1710232066"
-  links: ""
-  keywords: ""
-  emphasized: ""
-- html: "kaeru2193.html"
-  title: "かえる2193"
-  lastModified: "1709989879"
-  links: ""
-  keywords: ""
-  emphasized: ""
-- html: "kiakardapjarilrislonwalatem.html"
-  title: "kiakardapjarilrislonwalatem"
-  lastModified: "1709989879"
-  links: ""
-  keywords: ""
-  emphasized: ""
-- html: "myu-rin.html"
-  title: "みゅーりん"
-  lastModified: "1709989879"
-  links: ""
-  keywords: ""
-  emphasized: ""
-- html: "nsopiba.html"
-  title: "ンソピ場"
-  lastModified: "1709989879"
-  links: "ンソピハ -> nsopikha.html"
-  keywords: ""
-  emphasized: ""
-- html: "nsopibash.html"
-  title: "ンソピ場語"
-  lastModified: "1710232078"
-  links: "ンソピ場 -> nsopiba.html"
-  keywords: ""
-  emphasized: ""
-- html: "nsopikha.html"
-  title: "ンソピハ"
-  lastModified: "1709989879"
-  links: "ンソピ場 -> nsopiba.html, toki pona -> tokipona.html"
-  keywords: ""
-  emphasized: ""
-- html: "nsopikhanikki.html"
-  title: "ンソピハ日記"
-  lastModified: "1709952998"
-  links: "ンソピ場 -> nsopiba.html, ンソピハ -> nsopikha.html, ピハ主義 -> pihaism.html, トキポナ -> tokipona.html"
-  keywords: ""
-  emphasized: ""
-- html: "pakola.html"
-  title: "パコラ"
-  lastModified: "1709952998"
-  links: ""
-  keywords: ""
-  emphasized: ""
-- html: "piha.html"
-  title: "ぴは"
-  lastModified: "1709952998"
-  links: "ンソピ場 -> nsopiba.html"
-  keywords: ""
-  emphasized: ""
-- html: "pihaism.html"
-  title: "ぴは主義"
-  lastModified: "1709952998"
-  links: ""
-  keywords: ""
-  emphasized: ""
-- html: "ponaponajapan.html"
-  title: "ぽなぽなジャパン"
-  lastModified: "1709952998"
-  links: "みゅーりん -> myu-rin.html, トキポナ -> tokipona.html, 日本語 -> ponjo.html"
-  keywords: ""
-  emphasized: ""
-- html: "ponjo.html"
-  title: "ポニョ語"
-  lastModified: "1709952998"
-  links: "ンソピハ -> nsopikha.html"
-  keywords: ""
-  emphasized: ""
-- html: "ponsuke.html"
-  title: "ぽんすけ"
-  lastModified: "1709952998"
-  links: ""
-  keywords: ""
-  emphasized: ""
-- html: "puka.html"
-  title: "ぷか"
-  lastModified: "1709952998"
-  links: ""
-  keywords: ""
-  emphasized: ""
-- html: "rotokas.html"
-  title: "ロトカス語"
-  lastModified: "1709952998"
-  links: "ンソピハ -> nsopikha.html"
-  keywords: ""
-  emphasized: ""
-- html: "satoharuka.html"
-  title: "佐藤陽花"
-  lastModified: "1709952998"
-  links: ""
-  keywords: ""
-  emphasized: ""
-- html: "semelisemeanuseme.html"
-  title: "seme li seme ala seme anu seme?"
-  lastModified: "1709952998"
-  links: "seme? -> semelisemeanuseme.html"
-  keywords: ""
-  emphasized: ""
-- html: "tokipona.html"
-  title: "トキポナ"
-  lastModified: "1709952998"
-  links: "ンソピハ -> nsopikha.html, ぽなぽなジャパン -> ponaponajapan.html"
-  keywords: ""
-  emphasized: ""
-- html: "tuo.html"
-  title: "倫"
-  lastModified: "1709952998"
-  links: "ンソピ場 -> nsopiba.html"
-  keywords: ""
-  emphasized: ""
-- html: "yuzurusofia.html"
-  title: "ゆずるそふぃあ"
-  lastModified: "1709952998"
-  links: ""
-  keywords: ""
-  emphasized: ""
+- html: 'ajitama.html'
+  title: 'あじたま'
+  lastModified: '1734601256'
+  links: ''
+  keywords: ''
+  emphasized: ''
+- html: 'epikijetesantakaluKeta.html'
+  title: 'epikijetesantakalu Keta'
+  lastModified: '1734601256'
+  links: ''
+  keywords: ''
+  emphasized: ''
+- html: 'kaeru2193.html'
+  title: 'かえる2193'
+  lastModified: '1734601256'
+  links: ''
+  keywords: ''
+  emphasized: ''
+- html: 'kani-war.html'
+  title: ''
+  lastModified: '1734599608'
+  links: ''
+  keywords: ''
+  emphasized: ''
+- html: 'kiakardapjarilrislonwalatem.html'
+  title: 'kiakardapjarilrislonwalatem'
+  lastModified: '1734601256'
+  links: ''
+  keywords: ''
+  emphasized: ''
+- html: 'myu-rin.html'
+  title: 'みゅーりん'
+  lastModified: '1734601256'
+  links: ''
+  keywords: ''
+  emphasized: ''
+- html: 'nsopiba.html'
+  title: 'ンソピ場'
+  lastModified: '1734601256'
+  links: 'ンソピハ -> nsopikha.html'
+  keywords: ''
+  emphasized: ''
+- html: 'nsopibash.html'
+  title: 'ンソピ場語'
+  lastModified: '1734601256'
+  links: 'ンソピ場 -> nsopiba.html'
+  keywords: ''
+  emphasized: ''
+- html: 'nsopikha.html'
+  title: 'ンソピハ'
+  lastModified: '1734617560'
+  links: 'ンソピ場 -> nsopiba.html'
+  keywords: ''
+  emphasized: ''
+- html: 'nsopikhanikki.html'
+  title: 'ンソピハ日記'
+  lastModified: '1734601256'
+  links: 'ンソピ場 -> nsopiba.html, ンソピハ -> nsopikha.html, ピハ主義 -> pihaism.html, トキポナ -> tokipona.html'
+  keywords: ''
+  emphasized: '日記文学, 簡明さ, 対等さ'
+- html: 'pakola.html'
+  title: 'パコラ'
+  lastModified: '1734601256'
+  links: ''
+  keywords: ''
+  emphasized: ''
+- html: 'piha.html'
+  title: 'ぴは'
+  lastModified: '1734601256'
+  links: 'ンソピ場 -> nsopiba.html'
+  keywords: ''
+  emphasized: ''
+- html: 'pihaism.html'
+  title: 'ぴは主義'
+  lastModified: '1734601256'
+  links: ''
+  keywords: ''
+  emphasized: ''
+- html: 'ponaponajapan.html'
+  title: 'ぽなぽなジャパン'
+  lastModified: '1734601256'
+  links: 'みゅーりん -> myu-rin.html, トキポナ -> tokipona.html, 日本語 -> ponjo.html'
+  keywords: ''
+  emphasized: ''
+- html: 'ponjo.html'
+  title: 'ポニョ語'
+  lastModified: '1734601256'
+  links: 'ンソピハ -> nsopikha.html'
+  keywords: ''
+  emphasized: ''
+- html: 'ponsuke.html'
+  title: 'ぽんすけ'
+  lastModified: '1734601256'
+  links: ''
+  keywords: ''
+  emphasized: ''
+- html: 'puka.html'
+  title: 'ぷか'
+  lastModified: '1734601256'
+  links: ''
+  keywords: ''
+  emphasized: ''
+- html: 'rotokas.html'
+  title: 'ロトカス語'
+  lastModified: '1734601256'
+  links: 'ンソピハ -> nsopikha.html'
+  keywords: ''
+  emphasized: ''
+- html: 'satoharuka.html'
+  title: '佐藤陽花'
+  lastModified: '1734601256'
+  links: ''
+  keywords: ''
+  emphasized: ''
+- html: 'semelisemeanuseme.html'
+  title: 'seme li seme ala seme anu seme?'
+  lastModified: '1734601777'
+  links: 'seme? -> semelisemeanuseme.html'
+  keywords: ''
+  emphasized: ''
+- html: 'tokipona.html'
+  title: 'トキポナ'
+  lastModified: '1734617588'
+  links: 'ンソピハ -> nsopikha.html, ぽなぽなジャパン -> ponaponajapan.html'
+  keywords: ''
+  emphasized: 'ミニマリスト言語'
+- html: 'tuo.html'
+  title: '倫'
+  lastModified: '1734601256'
+  links: ''
+  keywords: ''
+  emphasized: ''
+- html: 'yamisekoubun.html'
+  title: '闇瀬構文'
+  lastModified: '1734617349'
+  links: ''
+  keywords: ''
+  emphasized: ''
+- html: 'yuzurusofia.html'
+  title: 'ゆずるそふぃあ'
+  lastModified: '1734601256'
+  links: 'ツイッター（Xじゃないよ） -> twitter.com/yuzuru_sofia, ニコニコ -> nicovideo.jp/user/129689788, migdal -> migdal.jp/yuzuru_sofia'
+  keywords: ''
+  emphasized: ''

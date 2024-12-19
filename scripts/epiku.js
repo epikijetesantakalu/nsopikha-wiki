@@ -1,7 +1,6 @@
-"use strict";
-{
+export function loadEpiku(pathRoot) {
     const xhr = new XMLHttpRequest();
-    xhr.open('GET', "/nsopikha-wiki/index.json");
+    xhr.open('GET', `${pathRoot}/index.json`);
     xhr.onload = () => {
         const pageData = JSON.parse(xhr.response);
         const epikuElem = document.getElementById("epikuContent");
@@ -10,7 +9,7 @@
         const epikuID = Math.floor(Math.random() * pageData.length);
         const epiku = pageData[epikuID];
         const pageXhr = new XMLHttpRequest();
-        pageXhr.open('GET', `/nsopikha-wiki/wiki/${epiku.html}`);
+        pageXhr.open('GET', `${pathRoot}/wiki/${epiku.html}`);
         pageXhr.onload = () => {
             const epikuContent = pageXhr.response
                 .replace(/<script[^]*/g, "") //スクリプト部分をカット
@@ -21,14 +20,14 @@
             console.log(epikuContent);
             epikuElem.innerHTML =
                 `
-            <span class="epikuTitle">
-                <a href="/nsopikha-wiki/wiki/${epiku.html}">
-                    ${epiku.title}
-                </a>
-            </span>
-            <div class="epikuText">
-                ${epikuContent}…
-            </div>`;
+                <span class="epikuTitle">
+                    <a href="${pathRoot}/wiki/${epiku.html}">
+                        ${epiku.title}
+                    </a>
+                </span>
+                <div class="epikuText">
+                    ${epikuContent}…
+                </div>`;
         };
         pageXhr.send();
     };

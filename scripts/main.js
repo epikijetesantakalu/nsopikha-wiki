@@ -1,4 +1,6 @@
-"use strict";
+import { loadEpiku } from "./epiku.js";
+const pathRoot = location.pathname.includes("nsopikha-wiki") ? "/nsopikha-wiki" : ""; //ローカル環境と実環境で挙動を統一
+console.log(pathRoot);
 insertTemplate("header", "header");
 insertTemplate("stub", "stub");
 insertTemplate("footer", "footer");
@@ -7,12 +9,13 @@ window.onload = () => {
     const searchButton = document.getElementById("searchButton");
     const searchText = document.getElementById("search");
     searchButton.addEventListener("click", (e) => {
-        window.location.assign(`/nsopikha-wiki/specials/search.html?text=${searchText.value}`);
+        window.location.assign(`${pathRoot}/specials/search.html?text=${searchText.value}`);
     });
+    loadEpiku(pathRoot);
 };
 function insertTemplate(file, className) {
     const req = new XMLHttpRequest();
-    req.open("GET", `/nsopikha-wiki/layouts/${file}.html`, true);
+    req.open("GET", `${pathRoot}/layouts/${file}.html`, true);
     req.onreadystatechange = () => {
         if (req.readyState === 4 && req.status === 200) {
             const HTML = req.responseText;
